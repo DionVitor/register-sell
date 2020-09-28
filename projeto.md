@@ -11,7 +11,7 @@
 6. O sistema deve conter interface gráfica e deverá ser do tipo execultável (.exe).
 
 Item do Projeto | Taxa de conclusão
----|---
+--- | ---
 1. | 0 %
 2. | 0 %
 3. | 0 %

@@ -1,6 +1,5 @@
-def bobyOfMenu(num_lines=30, * strings):
+def body_of_menu(num_lines=30, * strings):
     print('-' * num_lines)
-
     list = []
 
     for c in range(0, len(strings)):
@@ -10,4 +9,5 @@ def bobyOfMenu(num_lines=30, * strings):
 
     return list
 
-
+def write_in_data(file):
+    open(file, 'w')

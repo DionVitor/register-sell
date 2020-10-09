@@ -1,8 +1,15 @@
-from functions import bobyOfMenu
+from functions import body_of_menu
 
-list1 = bobyOfMenu(35, 'Cadastrar venda', 'Histórico de vendas', 'Relatório de dívidas pendentes')
-option = str(input('Digite uma opção: '))
+option = 0
+list1 = []
 
 while option not in list1:
-    bobyOfMenu(35, 'Cadastrar venda', 'Histórico de vendas', 'Relatório de dívidas pendentes')
-    option = str(input('Digite uma opção: '))
+    list1 = body_of_menu(35, 'Cadastrar venda', 'Histórico de vendas', 'Relatório de dívidas pendentes')
+
+    try:
+        option = str(input('Digite uma opção: '))
+        if option not in list1:
+            print('-' * 35)
+            print('ERRO 01: DIGITE UM NÚMERO VÁLIDO!')
+    except:
+        print('ERROR 02: HOUVE UM ERRO AO ANALISAR SUA OPÇÃO.')

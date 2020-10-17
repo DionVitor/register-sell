@@ -1,3 +1,6 @@
+def lines():
+    print('-' * 35)
+
 def body_of_menu(num_lines=30, * strings):
     print('-' * num_lines)
     list = []
@@ -9,5 +12,16 @@ def body_of_menu(num_lines=30, * strings):
 
     return list
 
-def write_in_data(file):
-    open(file, 'w')
+def append_in_data(file, cont):
+    archive = open(file, 'a')
+    archive.write(f'{cont}\n')
+    archive.close()
+
+
+def lines_in_archive(file):
+    archive = open(file)
+    total = 0
+    for line in archive:
+        total += 1
+    archive.close()
+    return total

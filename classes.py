@@ -21,8 +21,14 @@ class Action:
                     valor2 = valor.replace('.', '0')
                 float(valor)
             finally:
-                # CRIAR CONFIRMAÇÃO PARA INSERIR OS ARQUIVOS!
-                append_in_data(archive, f'{nome.title()}/{produto}/{valor}')
+                lines()
+                confirmation = str(input(f'Você realmente deseja adicionar:\nCliente: {nome.title()}\nProduto: {produto}\nValor: {valor}\n[S/N]'))
+                lines()
+                if confirmation in 'Ss':
+                    append_in_data(archive, f'{nome.title()}/{produto}/{valor}')
+                    print(f'OK, foi adicionado.')
+                else:
+                    print(f'OK, não foi adicionado.')
             lines()
 
         if option == '2':
@@ -52,3 +58,12 @@ class Action:
                     print(f'Cliente: {line[0]}\nCompra: {line[1]}\nPreço: {line[2]}')
                     lines()
                 a.close()
+
+        if option == '3':
+            total = 0
+            a = open(archive)
+            for c in range(0, lines_in_archive(archive)):
+                line = a.readline().replace('\n', '').split('/')
+                total += float(line[2])
+            a.close()
+            print(f'O valor total de dívidas é: {total}')

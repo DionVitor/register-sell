@@ -16,4 +16,4 @@ while option not in list1:
     except:
         print('ERROR 02: HOUVE UM ERRO AO ANALISAR SUA OPÇÃO.')
 
-a = Action(option)
+Action(option)

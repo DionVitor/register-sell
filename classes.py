@@ -1,4 +1,4 @@
-from functions import lines, append_in_data, body_of_menu, somar_valores_dic, lines_in_archive
+from functions import lines, append_in_data, body_of_menu, lines_in_archive
 
 archive = 'banco_de_dados.txt'
 class Action:

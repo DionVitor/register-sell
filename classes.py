@@ -130,6 +130,7 @@ class Action:
                 total += float(line[2])
             a.close()
             print(f'O valor total de dívidas é: {total}')
+            lines()
 
 
         if option == '5':

@@ -104,6 +104,25 @@ class Action:
 
 
         if option == '3':
+            lines()
+            list_with_all_debtors = []
+            a = open(archive)
+            index = 1
+            exist_debtor = False
+            for c in range(0, lines_in_archive(archive)):
+                line = a.readline().replace('\n', '').split('/')
+                if line[0] not in list_with_all_debtors:
+                    print(f'{index} - {line[0]}')
+                    list_with_all_debtors.append(line[0])
+                    index += 1
+                    exist_debtor = True
+            if exist_debtor:
+                lines()
+            else:
+                print('Ainda não existe devedores.')
+                lines()
+
+        if option == '4':
             total = 0
             a = open(archive)
             for c in range(0, lines_in_archive(archive)):
@@ -113,44 +132,65 @@ class Action:
             print(f'O valor total de dívidas é: {total}')
 
 
-        if option == '4':
+        if option == '5':
 
             nome = ''
             list_with_all_clients = []
             a = open(archive)
+            total_debt = 0
+
             for c in range(0, lines_in_archive(archive)):
                 line = a.readline().replace('\n', '').split('/')
                 list_with_all_clients.append(f'{line[0]}')
             while nome not in list_with_all_clients:
                 lines()
                 nome = str(input('Digite o nome do pagante: ')).title()
-            produto = '**pagamento**'
-            valor = input('Digite o preço do pagamento: ')
+            a.close()
 
-            try:
-                float(valor)
-            except:
-                print('ERRO 3: O VALOR DA VENDA ESTÁ INCORRETO.')
+            a = open(archive)
+            for c in range(0, lines_in_archive(archive)):
+                line = a.readline().replace('\n', '').split('/')
+                if line[0] == nome:
+                    total_debt += float(line[2])
+            a.close()
 
-                valor2 = ''
-                while not valor2.isdigit():
-                    valor = input('Digite o preço da venda: ')
-                    valor2 = valor.replace('.', '0')
-                float(valor)
-            finally:
+            if total_debt > 0:
+                produto = '**pagamento**'
+                valor = input('Digite o preço do pagamento: ')
+                try:
+                    float(valor)
+                except:
+                    print('ERRO 3: O VALOR DA VENDA ESTÁ INCORRETO.')
+
+                    valor2 = ''
+                    while not valor2.isdigit():
+                        valor = input('Digite o preço da venda: ')
+                        valor2 = valor.replace('.', '0')
+                    float(valor)
+                finally:
+                    if total_debt - float(valor) < 0:
+                        lines()
+                        print(f'{nome} tem dívida de {total_debt} reias.')
+                        print(f'É impossível reduzir {valor} de {total_debt}!')
+                        lines()
+
+                    else:
+                        confirmation = str(input(f'Você realmente deseja quitar essa dívida:\nPagante: {nome.title()}'
+                                                 f'\nValor: {valor}\n[S/N]'))
+                        lines()
+                        if confirmation in 'Ss':
+                            append_in_data(archive, f'{nome.title()}/{produto}/{float(valor) * -1}')
+                            print(f'OK, foi quitado a dívida de {valor} reias.')
+                        else:
+                            print(f'OK, não foi quitado a dívida.')
+                        lines()
+
+            else:
+                print(f'Cliente {nome} não possui dívidas.')
                 lines()
-                confirmation = str(input(f'Você realmente deseja quitar essa dívida:\nPagante: {nome.title()}'
-                                         f'\nValor: {valor}\n[S/N]'))
-                lines()
-                if confirmation in 'Ss':
-                    append_in_data(archive, f'{nome.title()}/{produto}/{float(valor) * -1}')
-                    print(f'OK, foi quitado a dívida de {valor} reias.')
-                else:
-                    print(f'OK, não foi quitado a dívida.')
-            lines()
 
 
-        if option == '5':
+        if option == '6':
             list_of_clients = []
             lines()
             a = open(archive)

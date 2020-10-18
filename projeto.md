@@ -6,15 +6,18 @@
     2. Criar organização do projeto;
     3. Criar facilidades na manutenção futura do projeto.
 3. O sistema deve ter uso de banco de dados.
-4. Fundamentalmente, o sistema registrará vendas; e especificamente para o sistema em questão, ele receberá atruibutos dessas vendas, como se essa venda já teve seu dinheiro recolhido ou não.
-5. O banco de dados deve ser capaz de armazenar os devedores individuais, e suas dívidas; além do total de todos esses dados.
-6. O sistema deve conter interface gráfica e deverá ser do tipo execultável (.exe).
+4. Fundamentalmente, o sistema registrará vendas; com caráter de organizar as finanças da loja.
+5. O banco de dados deve ser capaz de armazenar os devedores individuais, suas dívidas, produtos comprados e quitação de 
+dívidas.
+6. O sistema deve conter interface gráfica e deverá ser do tipo execultável em vários SOs.
 
-Item do Projeto | Taxa de conclusão
+O projeto será dividido em 3 etapas:
+1. Funcional no terminal;
+2. Funcional em GUI;
+3. Ser execultável em diversos SO.
+
+Etapas do Projeto | Conclusão da etapa
 --- | ---
 1 | 100 %
-2 | 100 %
-3 | 100 %
-4 | 5 %
-5 | 0 %
-6 | 0 %
+2 | 0 %
+3 | 0 %

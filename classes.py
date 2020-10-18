@@ -30,6 +30,7 @@ class Action:
                     print(f'OK, não foi adicionado.')
             lines()
 
+
         if option == '2':
             list_of_option2 = body_of_menu(35, 'Total de dívida por cliente', 'Extrato de vendas por cliente')
             option2 = 0
@@ -102,7 +103,6 @@ class Action:
                 lines()
 
 
-
         if option == '3':
             total = 0
             a = open(archive)
@@ -112,47 +112,18 @@ class Action:
             a.close()
             print(f'O valor total de dívidas é: {total}')
 
+
         if option == '4':
-            list_of_clients = []
-            lines()
+
+            nome = ''
+            list_with_all_clients = []
             a = open(archive)
             for c in range(0, lines_in_archive(archive)):
                 line = a.readline().replace('\n', '').split('/')
-                if line[0] not in list_of_clients:
-                    print(f'Cliente: {line[0]}')
-                    list_of_clients.append(line[0])
-                    lines()
-            a.close()
-
-            remove = str(input('Qual cliente você deseja excluir a dívida?')).title()
-            debt = 0
-            list_with_outhers_clients = []
-            a = open(archive)
-            for c in range(0, lines_in_archive(archive)):
-                line = a.readline().replace('\n', '').split('/')
-                if line[0] == remove:
-                    debt += float(line[2])
-                else:
-                    list_with_outhers_clients.append(line)
-
-            if debt != 0:
-                print(f'A dívida atual do cliente {remove} é: {debt}')
-            else:
-                print(f'Cliente {remove} não encontrado.')
-            a.close()
-            confirmation_remove_debt = str(input(f'Você realmente deseja excluir a dívida de {remove} no valor de {debt} reias? [S/N]'))
-            if confirmation_remove_debt in 'Ss':
-                a = open(archive, 'w')
-                for c in range(0, len(list_with_outhers_clients)):
-                    a.write(f'{list_with_outhers_clients[c][0]}/{list_with_outhers_clients[c][1]}/{list_with_outhers_clients[c][2]}\n')
-                a.close()
-                print(f'Foi exluído a dívida de {remove}.')
-            else:
-                print(f'Não foi excluído a dívida de {remove}.')
-
-        if option == '5':
-            lines()
-            nome = str(input('Digite o nome do pagante: '))
+                list_with_all_clients.append(f'{line[0]}')
+            while nome not in list_with_all_clients:
+                lines()
+                nome = str(input('Digite o nome do pagante: ')).title()
             produto = '**pagamento**'
             valor = input('Digite o preço do pagamento: ')
 
@@ -177,3 +148,44 @@ class Action:
                 else:
                     print(f'OK, não foi quitado a dívida.')
             lines()
+
+
+        if option == '5':
+            list_of_clients = []
+            lines()
+            a = open(archive)
+            for c in range(0, lines_in_archive(archive)):
+                line = a.readline().replace('\n', '').split('/')
+                if line[0] not in list_of_clients:
+                    print(f'Cliente: {line[0]}')
+                    list_of_clients.append(line[0])
+                    lines()
+            a.close()
+
+            remove = str(input('Qual cliente você deseja excluir os dados?')).title()
+            debt = 0
+            exist_client = False
+            list_with_outhers_clients = []
+            a = open(archive)
+            for c in range(0, lines_in_archive(archive)):
+                line = a.readline().replace('\n', '').split('/')
+                if line[0] == remove:
+                    debt += float(line[2])
+                    exist_client = True
+                else:
+                    list_with_outhers_clients.append(line)
+
+            if exist_client:
+                print(f'A dívida atual do cliente {remove} é: {debt}')
+            else:
+                print(f'Cliente {remove} não encontrado.')
+            a.close()
+            confirmation_remove_debt = str(input(f'Você realmente deseja excluir os dados do cliente {remove}? [S/N]'))
+            if confirmation_remove_debt in 'Ss':
+                a = open(archive, 'w')
+                for c in range(0, len(list_with_outhers_clients)):
+                    a.write(f'{list_with_outhers_clients[c][0]}/{list_with_outhers_clients[c][1]}/{list_with_outhers_clients[c][2]}\n')
+                a.close()
+                print(f'Foi exluído os dados de {remove}.')
+            else:
+                print(f'Não foi excluído os dados de {remove}.')

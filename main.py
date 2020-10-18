@@ -5,8 +5,8 @@ option = 0
 list1 = []
 
 while option not in list1:
-    list1 = body_of_menu(35, 'Cadastrar dívida', 'Buscar dívida', 'Relatório de dívidas',
-                         'Excluir dívida', 'Diminuir uma dívida')
+    list1 = body_of_menu(35, 'Cadastrar dívida', 'Buscar dívida', 'Total de dívidas',
+                         'Diminuir uma dívida', 'Excluir dados')
 
     try:
         option = str(input('Digite uma opção: '))

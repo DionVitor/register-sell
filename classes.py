@@ -31,30 +31,51 @@ class Action:
             lines()
 
         if option == '2':
-            list_of_option2 = body_of_menu(35, 'Pesquisar por cliente', 'Ver todas as vendas')
+            list_of_option2 = body_of_menu(35, 'Total de dívida por cliente', 'Extrato de vendas por cliente')
             option2 = 0
             while option2 not in list_of_option2:
                 option2 = str(input('Digite uma opção: '))
 
             if option2 == '1':
                 search = str(input('Digite o nome do cliente: ')).title()
-                cont = 0
+                total_debt = 0
+                total_purchase = 0
                 a = open(archive)
                 for c in range(0, lines_in_archive(archive)):
                     line = a.readline().replace('\n', '').split('/')
 
                     if line[0] == search:
-                        lines()
-                        print(f'Compra do cliente {line[0]} encontrada!\nCompra: {line[1]}\nPreço: {line[2]}')
-                        lines()
+                        total_debt += float(line[2])
+                        total_purchase += 1
                 a.close()
+                lines()
+                if total_debt != 0:
+                    if total_purchase != 1:
+                        s = 'compras'
+                    else:
+                        s = 'compra'
+                    print(f'{total_purchase} {s} do cliente encontrada!\nDívida total de {total_debt} reais.')
+                    lines()
+                else:
+                    print('Cliente não encontrado!')
+                    lines()
+
 
             if option2 == '2':
                 a = open(archive)
+                search = str(input('Digite o nome do cliente: ')).title()
+                lines()
+                cont = 0
+                print(f'Cliente {search}:')
+                lines()
                 for c in range(0, lines_in_archive(archive)):
                     line = a.readline().replace('\n', '').split('/')
-                    lines()
-                    print(f'Cliente: {line[0]}\nCompra: {line[1]}\nPreço: {line[2]}')
+                    if line[0] == search:
+                        print(f'Compra: {line[1]}\nPreço: {line[2]}')
+                        lines()
+                        cont += 1
+                if cont == 0:
+                    print('Não encontrado!')
                     lines()
                 a.close()
 
@@ -104,3 +125,5 @@ class Action:
                 print(f'Foi exluído a dívida de {remove}.')
             else:
                 print(f'Não foi excluído a dívida de {remove}.')
+
+        #if option == '5':

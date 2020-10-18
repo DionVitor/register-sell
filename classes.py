@@ -40,16 +40,19 @@ class Action:
                 search = str(input('Digite o nome do cliente: ')).title()
                 total_debt = 0
                 total_purchase = 0
+                exist_client = False
                 a = open(archive)
                 for c in range(0, lines_in_archive(archive)):
                     line = a.readline().replace('\n', '').split('/')
 
                     if line[0] == search:
                         total_debt += float(line[2])
-                        total_purchase += 1
+                        if line[1] != '**pagamento**':
+                            total_purchase += 1
+                            exist_client = True
                 a.close()
                 lines()
-                if total_debt != 0:
+                if exist_client:
                     if total_purchase != 1:
                         s = 'compras'
                     else:
@@ -71,13 +74,34 @@ class Action:
                 for c in range(0, lines_in_archive(archive)):
                     line = a.readline().replace('\n', '').split('/')
                     if line[0] == search:
-                        print(f'Compra: {line[1]}\nPreço: {line[2]}')
-                        lines()
-                        cont += 1
+                        if line[1] != '**pagamento**':
+                            print(f'Compra: {line[1]}\nPreço: {line[2]}')
+                            lines()
+                            cont += 1
                 if cont == 0:
                     print('Não encontrado!')
                     lines()
                 a.close()
+
+                a = open(archive)
+                for c in range(0, lines_in_archive(archive)):
+                    line = a.readline().replace('\n', '').split('/')
+                    if line[0] == search:
+                        if line[1] == '**pagamento**':
+                            print(f'PAGAMENTO: {line[2]}')
+                            lines()
+                a.close()
+
+                a = open(archive)
+                total_debt = 0
+                for c in range(0, lines_in_archive(archive)):
+                    line = a.readline().replace('\n', '').split('/')
+                    if line[0] == search:
+                        total_debt += float(line[2])
+                print(f'Total da dívida de {search}: {total_debt}')
+                lines()
+
+
 
         if option == '3':
             total = 0
@@ -126,4 +150,30 @@ class Action:
             else:
                 print(f'Não foi excluído a dívida de {remove}.')
 
-        #if option == '5':
+        if option == '5':
+            lines()
+            nome = str(input('Digite o nome do pagante: '))
+            produto = '**pagamento**'
+            valor = input('Digite o preço do pagamento: ')
+
+            try:
+                float(valor)
+            except:
+                print('ERRO 3: O VALOR DA VENDA ESTÁ INCORRETO.')
+
+                valor2 = ''
+                while not valor2.isdigit():
+                    valor = input('Digite o preço da venda: ')
+                    valor2 = valor.replace('.', '0')
+                float(valor)
+            finally:
+                lines()
+                confirmation = str(input(f'Você realmente deseja quitar essa dívida:\nPagante: {nome.title()}'
+                                         f'\nValor: {valor}\n[S/N]'))
+                lines()
+                if confirmation in 'Ss':
+                    append_in_data(archive, f'{nome.title()}/{produto}/{float(valor) * -1}')
+                    print(f'OK, foi quitado a dívida de {valor} reias.')
+                else:
+                    print(f'OK, não foi quitado a dívida.')
+            lines()

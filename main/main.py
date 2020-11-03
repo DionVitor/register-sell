@@ -8,26 +8,26 @@ from kivy.uix.textinput import TextInput
 from functions import append_in_data
 from kivy.uix.popup import Popup
 
-layout = GridLayout()
+layout_register = GridLayout()
 
 
 class ScreenMenu(Screen):
     def __init__(self, **kwargs):
         super(ScreenMenu, self).__init__(**kwargs)
 
-        layout_box = BoxLayout()
-        layout_box.orientation = 'vertical'
-        layout_box.padding = 10
+        layout_menu = BoxLayout()
+        layout_menu.orientation = 'vertical'
+        layout_menu.padding = 10
 
-        layout_box.add_widget(Label(text='MENU', font_size=40))
-        layout_box.add_widget(Button(text='Cadastrar dívida', on_release=self.change_screen_for_register))
-        layout_box.add_widget(Button(text='Buscar dívida'))
-        layout_box.add_widget(Button(text='Todos os devedores'))
-        layout_box.add_widget(Button(text='Total de dívidas'))
-        layout_box.add_widget(Button(text='Diminuir uma dívida'))
-        layout_box.add_widget(Button(text='Excluir dados'))
+        layout_menu.add_widget(Label(text='MENU', font_size=40))
+        layout_menu.add_widget(Button(text='Cadastrar dívida', on_release=self.change_screen_for_register))
+        layout_menu.add_widget(Button(text='Buscar dívida'))
+        layout_menu.add_widget(Button(text='Todos os devedores'))
+        layout_menu.add_widget(Button(text='Total de dívidas'))
+        layout_menu.add_widget(Button(text='Diminuir uma dívida'))
+        layout_menu.add_widget(Button(text='Excluir dados'))
 
-        self.add_widget(layout_box)
+        self.add_widget(layout_menu)
 
     def change_screen_for_register(self, *args):
         self.manager.current = 'register'
@@ -37,39 +37,39 @@ class ScreenRegister(Screen):
     def __init__(self, **kwargs):
         super(ScreenRegister, self).__init__(**kwargs)
 
-        global layout
+        global layout_register
 
-        layout.cols = 2
-        layout.padding = 20
+        layout_register.cols = 2
+        layout_register.padding = 20
 
-        layout.add_widget(Label(text='Comprador:'))
-        layout.buyer = TextInput()
-        layout.add_widget(layout.buyer)
+        layout_register.add_widget(Label(text='Comprador:'))
+        layout_register.buyer = TextInput()
+        layout_register.add_widget(layout_register.buyer)
 
-        layout.add_widget(Label(text='Produto:'))
-        layout.product = TextInput()
-        layout.add_widget(layout.product)
+        layout_register.add_widget(Label(text='Produto:'))
+        layout_register.product = TextInput()
+        layout_register.add_widget(layout_register.product)
 
-        layout.add_widget(Label(text='Preço:'))
-        layout.price = TextInput()
-        layout.add_widget(layout.price)
+        layout_register.add_widget(Label(text='Preço:'))
+        layout_register.price = TextInput()
+        layout_register.add_widget(layout_register.price)
 
-        layout.add_widget(Label())
-        layout.add_widget(Label())
+        layout_register.add_widget(Label())
+        layout_register.add_widget(Label())
 
-        layout.add_widget(Button(text='VOLTAR', on_release=self.back_to_menu))
-        layout.add_widget(Button(text='CONFIRMAR', on_release=self.confirm))
+        layout_register.add_widget(Button(text='VOLTAR', on_release=self.back_to_menu))
+        layout_register.add_widget(Button(text='CONFIRMAR', on_release=self.confirm))
 
-        self.add_widget(layout)
+        self.add_widget(layout_register)
 
     def back_to_menu(self, *args):
         self.manager.current = 'menu'
 
     def confirm(self, *args):
 
-        buyer = layout.buyer.text.title()
-        product = layout.product.text
-        price = layout.price.text
+        buyer = layout_register.buyer.text.title()
+        product = layout_register.product.text
+        price = layout_register.price.text
 
         info = f'{buyer}/{product}/{price}'
 
@@ -78,12 +78,12 @@ class ScreenRegister(Screen):
             popup.dismiss()
 
         def confirm_popup(*args):
-            append_in_data('banco_de_dados.txt', info)
+            append_in_data('main/banco_de_dados.txt', info)
             popup.dismiss()
             self.manager.current = 'menu'
-            layout.buyer.text = ''
-            layout.product.text = ''
-            layout.price.text = ''
+            layout_register.buyer.text = ''
+            layout_register.product.text = ''
+            layout_register.price.text = ''
 
         content = BoxLayout()
         content.orientation = 'vertical'

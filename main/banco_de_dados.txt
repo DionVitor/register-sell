@@ -1,0 +1,3 @@
+Dion/tupp/10
+Mica/yp/20
+Dion/**pagamento**/-10

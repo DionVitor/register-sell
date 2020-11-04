@@ -7,11 +7,18 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from functions import append_in_data, lines_in_archive
 from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
 
+
+file = 'banco_de_dados.txt'
 layout_register = GridLayout()
 layout_search = BoxLayout()
 layout_total_debts = BoxLayout()
-file = 'banco_de_dados.txt'
+layout_extract = BoxLayout()
+scroll_layout_extract = ScrollView()
+
+box = BoxLayout(orientation='vertical')
 
 
 class ScreenMenu(Screen):
@@ -21,6 +28,7 @@ class ScreenMenu(Screen):
         layout_menu = BoxLayout()
         layout_menu.orientation = 'vertical'
         layout_menu.padding = 10
+        layout_menu.spacing = 2.5
 
         layout_menu.add_widget(Label(text='MENU', font_size=40))
         layout_menu.add_widget(Button(text='Cadastrar dívida', on_release=self.change_screen_for_register))
@@ -120,12 +128,14 @@ class ScreenSearch(Screen):
 
         layout_search.orientation = 'vertical'
         layout_search.padding = 10
+        layout_search.spacing = 2.5
 
         layout_search.add_widget(Label(text='Pesquisar por cliente', font_size=25, size_hint=(1, None), height=50))
         layout_search.add_widget(Label(size_hint=(1, None), height=110))
         layout_search.add_widget(Button(text='Total de dívidas', size_hint=(1, None), height=100,
                                         on_release=self.change_screen_for_total_debts))
-        layout_search.add_widget(Button(text='Extrato de vendas', size_hint=(1, None), height=100))
+        layout_search.add_widget(Button(text='Extrato de vendas', size_hint=(1, None), height=100,
+                                        on_release=self.change_screen_for_extract))
         layout_search.add_widget(Label())
         layout_search.add_widget(Button(text='Voltar', size_hint=(1, None), height=50, on_release=self.back_to_menu))
         self.add_widget(layout_search)
@@ -136,6 +146,9 @@ class ScreenSearch(Screen):
     def change_screen_for_total_debts(self, *args):
         self.manager.current = 'total_debts'
 
+    def change_screen_for_extract(self, *args):
+        self.manager.current = 'extract'
+
 
 class ScreenTotalDebts(Screen):
     def __init__(self, **kwargs):
@@ -144,6 +157,7 @@ class ScreenTotalDebts(Screen):
         global layout_total_debts
         layout_total_debts.orientation = 'vertical'
         layout_total_debts.padding = 10
+        layout_total_debts.spacing = 2.5
 
         layout_total_debts.add_widget(Label(text='Nome do cliente:', size_hint=(1, None), height=100, font_size=20))
 
@@ -153,7 +167,7 @@ class ScreenTotalDebts(Screen):
         layout_total_debts.add_widget(Button(text='Procurar', size_hint=(1, None), height=50,
                                              on_release=self.search))
 
-        layout_total_debts.infos = Label(text='0 compras do cliente\nTotal de dívidas: ')
+        layout_total_debts.infos = Label()
         layout_total_debts.add_widget(layout_total_debts.infos)
 
         layout_total_debts.add_widget(Button(text='Voltar', size_hint=(1, None), height=50,
@@ -162,6 +176,8 @@ class ScreenTotalDebts(Screen):
         self.add_widget(layout_total_debts)
 
     def back_to_search(self, *args):
+        layout_total_debts.search.text = ''
+        layout_total_debts.infos.text = ''
         self.manager.current = 'search'
 
     def search(self, *args):
@@ -183,11 +199,81 @@ class ScreenTotalDebts(Screen):
             if total_purchase != 1:
                 s = 'compras'
             else:
-                s = 'compras'
+                s = 'compra'
             layout_total_debts.infos.text = f'{total_purchase} {s} do cliente encontada!\n' \
                                             f' Dívida total de {total_debt} reias'
         else:
             layout_total_debts.infos.text = 'Cliente não encontrado!'
+
+
+class ScreenExtract(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenExtract, self).__init__(**kwargs)
+
+        global layout_extract
+        global scroll_layout_extract
+        global box
+
+        layout_extract.orientation = 'vertical'
+        layout_extract.padding = 10
+        layout_extract.spacing = 2.5
+
+        layout_extract.add_widget(Label(text='Nome do cliente:', size_hint=(1, None), height=50, font_size=20))
+        layout_extract.search = TextInput(size_hint=(1, None), height=50)
+        layout_extract.add_widget(layout_extract.search)
+        layout_extract.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
+                                         on_release=self.search_extract))
+
+        layout_extract.label_of_client = Label(text='Cliente: ', size_hint=(1, None), height=50)
+        layout_extract.add_widget(layout_extract.label_of_client)
+
+        box.size_hint_y = None
+        scroll_layout_extract.add_widget(box)
+
+        layout_extract.add_widget(scroll_layout_extract)
+
+        layout_extract.total_debts = Label(text='Total: R$', size_hint=(1, None), height=50)
+        layout_extract.add_widget(layout_extract.total_debts)
+
+        layout_extract.add_widget(Button(text='Voltar', size_hint=(1, None), height=50, on_release=self.back_to_search))
+
+        self.add_widget(layout_extract)
+
+    def search_extract(self, *args):
+        layout_extract.label_of_client.text = f'Cliente: {layout_extract.search.text.title()}'
+
+        global box
+        box.clear_widgets()
+
+        with open(file) as archive:
+            cont = 0
+            total_debts = 0
+            list_with_payments = []
+            for c in range(0, lines_in_archive(file)):
+                line = archive.readline().replace('\n', '').split('/')
+                if line[0] == layout_extract.search.text.title():
+                    total_debts += float(line[2])
+                    if line[1] != '**pagamento**':
+                        box.add_widget(Label(text=f'Compra: {line[1]}\nPreço: {line[2]}',
+                                             size_hint=(1, None), height=75))
+                        cont += 1
+                    else:
+                        list_with_payments.append(f'{line[2]}')
+
+            layout_extract.total_debts.text = f'Total: R${total_debts}'
+
+            for items in list_with_payments:
+                box.add_widget(Label(text=f'PAGAMENTO\nPreço: {items.replace("-", "")}'))
+                cont += 1
+
+        box.height = 75 * cont
+
+    def back_to_search(self, *args):
+        layout_extract.search.text = ''
+        box.clear_widgets()
+        layout_extract.label_of_client.text = 'Cliente: '
+        layout_extract.total_debts.text = 'Total: R$'
+        self.manager.current = 'search'
 
 
 sm = ScreenManager(transition=FadeTransition())
@@ -195,6 +281,7 @@ sm.add_widget(ScreenMenu(name='menu'))
 sm.add_widget(ScreenRegister(name='register'))
 sm.add_widget(ScreenSearch(name='search'))
 sm.add_widget(ScreenTotalDebts(name='total_debts'))
+sm.add_widget(ScreenExtract(name='extract'))
 
 
 class System(App):

@@ -3,16 +3,14 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from functions import append_in_data, lines_in_archive
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
-from kivy.core.window import Window
 
 
 file = 'banco_de_dados.txt'
-layout_register = GridLayout()
+layout_register = BoxLayout()
 layout_search = BoxLayout()
 layout_total_debts = BoxLayout()
 layout_extract = BoxLayout()
@@ -53,26 +51,27 @@ class ScreenRegister(Screen):
 
         global layout_register
 
-        layout_register.cols = 2
+        layout_register.orientation = 'vertical'
         layout_register.padding = 10
+        layout_register.spacing = 2.5
 
-        layout_register.add_widget(Label(text='Comprador:'))
-        layout_register.buyer = TextInput()
+        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, None), height=75,))
+        layout_register.buyer = TextInput(size_hint=(1, None), height=30,)
         layout_register.add_widget(layout_register.buyer)
 
-        layout_register.add_widget(Label(text='Produto:'))
-        layout_register.product = TextInput()
+        layout_register.add_widget(Label(text='Produto:', size_hint=(1, None), height=75,))
+        layout_register.product = TextInput(size_hint=(1, None), height=30,)
         layout_register.add_widget(layout_register.product)
 
-        layout_register.add_widget(Label(text='Preço:'))
-        layout_register.price = TextInput()
+        layout_register.add_widget(Label(text='Preço:', size_hint=(1, None), height=75,))
+        layout_register.price = TextInput(size_hint=(1, None), height=30,)
         layout_register.add_widget(layout_register.price)
 
         layout_register.add_widget(Label())
         layout_register.add_widget(Label())
 
-        layout_register.add_widget(Button(text='VOLTAR', on_release=self.back_to_menu))
-        layout_register.add_widget(Button(text='CONFIRMAR', on_release=self.confirm))
+        layout_register.add_widget(Button(text='VOLTAR', size_hint=(1, None), height=50, on_release=self.back_to_menu))
+        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, None), height=50, on_release=self.confirm))
 
         self.add_widget(layout_register)
 

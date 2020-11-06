@@ -17,6 +17,7 @@ layout_extract = BoxLayout()
 scroll_layout_extract = ScrollView()
 layout_all_debtors = BoxLayout()
 scroll_layout_all_debtors = ScrollView()
+layout_all_debts = BoxLayout()
 
 widget_for_scroll_extract = BoxLayout(orientation='vertical')
 widget_for_scroll_all_debtors = BoxLayout(orientation='vertical')
@@ -35,7 +36,7 @@ class ScreenMenu(Screen):
         layout_menu.add_widget(Button(text='Cadastrar dívida', on_release=self.change_screen_for_register))
         layout_menu.add_widget(Button(text='Buscar dívida', on_release=self.change_screen_for_search))
         layout_menu.add_widget(Button(text='Todos os devedores', on_release=self.change_screen_for_all_debtors))
-        layout_menu.add_widget(Button(text='Total de dívidas'))
+        layout_menu.add_widget(Button(text='Total de dívidas', on_release=self.change_screen_for_all_debts))
         layout_menu.add_widget(Button(text='Diminuir uma dívida'))
         layout_menu.add_widget(Button(text='Excluir dados'))
 
@@ -49,6 +50,9 @@ class ScreenMenu(Screen):
 
     def change_screen_for_all_debtors(self, *args):
         self.manager.current = 'all_debtors'
+
+    def change_screen_for_all_debts(self, *args):
+        self.manager.current = 'all_debts'
 
 
 class ScreenRegister(Screen):
@@ -307,6 +311,7 @@ class ScreenAllDebtors(Screen):
         self.add_widget(layout_all_debtors)
 
     def back_to_menu(self, *args):
+        widget_for_scroll_all_debtors.clear_widgets()
         self.manager.current = 'menu'
 
     def search_all_debtors(self, *args):
@@ -334,6 +339,41 @@ class ScreenAllDebtors(Screen):
         scroll_layout_all_debtors.add_widget(widget_for_scroll_all_debtors)
 
 
+class ScreenAllDebts(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenAllDebts, self).__init__(**kwargs)
+        global layout_all_debts
+
+        layout_all_debts.orientation = 'vertical'
+        layout_all_debts.padding = 10
+        layout_all_debts.spacing = 2.5
+
+        layout_all_debts.add_widget(Label(text='Todos de dívidas:', size_hint=(1, None), height=75))
+        layout_all_debts.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
+                                           on_release=self.search_all_debts))
+
+        layout_all_debts.infos = Label(text='O valor total de dívida é:')
+        layout_all_debts.add_widget(layout_all_debts.infos)
+
+        layout_all_debts.add_widget(Button(text='Voltar', size_hint=(1, None), height=50,
+                                           on_release=self.back_to_menu))
+
+        self.add_widget(layout_all_debts)
+
+    def back_to_menu(self, *args):
+        layout_all_debts.infos.text = 'O valor total da dívida é:'
+        self.manager.current = 'menu'
+
+    def search_all_debts(self, *args):
+        total = 0
+        with open(file) as archive:
+            for c in range(0, lines_in_archive(file)):
+                line = archive.readline().replace('\n', '').split('/')
+                total += float(line[2])
+
+        layout_all_debts.infos.text = f'O valor total da dívida é: {total}'
+
+
 sm = ScreenManager(transition=FadeTransition())
 sm.add_widget(ScreenMenu(name='menu'))
 sm.add_widget(ScreenRegister(name='register'))
@@ -341,6 +381,7 @@ sm.add_widget(ScreenSearch(name='search'))
 sm.add_widget(ScreenTotalDebts(name='total_debts'))
 sm.add_widget(ScreenExtract(name='extract'))
 sm.add_widget(ScreenAllDebtors(name='all_debtors'))
+sm.add_widget(ScreenAllDebts(name='all_debts'))
 
 
 class System(App):

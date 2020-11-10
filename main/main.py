@@ -8,8 +8,8 @@ from functions import append_in_data, lines_in_archive
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 
-
 file = 'banco_de_dados.txt'
+payment = 0
 layout_register = BoxLayout()
 layout_search = BoxLayout()
 layout_total_debts = BoxLayout()
@@ -18,6 +18,7 @@ scroll_layout_extract = ScrollView()
 layout_all_debtors = BoxLayout()
 scroll_layout_all_debtors = ScrollView()
 layout_all_debts = BoxLayout()
+layout_payment = BoxLayout()
 
 widget_for_scroll_extract = BoxLayout(orientation='vertical')
 widget_for_scroll_all_debtors = BoxLayout(orientation='vertical')
@@ -37,7 +38,7 @@ class ScreenMenu(Screen):
         layout_menu.add_widget(Button(text='Buscar dívida', on_release=self.change_screen_for_search))
         layout_menu.add_widget(Button(text='Todos os devedores', on_release=self.change_screen_for_all_debtors))
         layout_menu.add_widget(Button(text='Total de dívidas', on_release=self.change_screen_for_all_debts))
-        layout_menu.add_widget(Button(text='Diminuir uma dívida'))
+        layout_menu.add_widget(Button(text='Diminuir uma dívida', on_release=self.change_screen_for_payment))
         layout_menu.add_widget(Button(text='Excluir dados'))
 
         self.add_widget(layout_menu)
@@ -54,6 +55,9 @@ class ScreenMenu(Screen):
     def change_screen_for_all_debts(self, *args):
         self.manager.current = 'all_debts'
 
+    def change_screen_for_payment(self, *args):
+        self.manager.current = 'payment'
+
 
 class ScreenRegister(Screen):
     def __init__(self, **kwargs):
@@ -65,16 +69,16 @@ class ScreenRegister(Screen):
         layout_register.padding = 10
         layout_register.spacing = 2.5
 
-        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, None), height=75,))
-        layout_register.buyer = TextInput(size_hint=(1, None), height=30,)
+        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, None), height=75, ))
+        layout_register.buyer = TextInput(size_hint=(1, None), height=30, )
         layout_register.add_widget(layout_register.buyer)
 
-        layout_register.add_widget(Label(text='Produto:', size_hint=(1, None), height=75,))
-        layout_register.product = TextInput(size_hint=(1, None), height=30,)
+        layout_register.add_widget(Label(text='Produto:', size_hint=(1, None), height=75, ))
+        layout_register.product = TextInput(size_hint=(1, None), height=30, )
         layout_register.add_widget(layout_register.product)
 
-        layout_register.add_widget(Label(text='Preço:', size_hint=(1, None), height=75,))
-        layout_register.price = TextInput(size_hint=(1, None), height=30,)
+        layout_register.add_widget(Label(text='Preço:', size_hint=(1, None), height=75, ))
+        layout_register.price = TextInput(size_hint=(1, None), height=30, )
         layout_register.add_widget(layout_register.price)
 
         layout_register.add_widget(Label())
@@ -89,7 +93,6 @@ class ScreenRegister(Screen):
         self.manager.current = 'menu'
 
     def confirm(self, *args):
-
         buyer = layout_register.buyer.text.title().strip()
         product = layout_register.product.text.strip()
         price = layout_register.price.text.replace(",", ".").strip()
@@ -374,6 +377,101 @@ class ScreenAllDebts(Screen):
         layout_all_debts.infos.text = f'O valor total da dívida é: {total}'
 
 
+class ScreenPayment(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenPayment, self).__init__(**kwargs)
+
+        global layout_payment
+        layout_payment.orientation = 'vertical'
+        layout_payment.padding = 10
+        layout_payment.spacing = 2.5
+
+        layout_payment.add_widget(Label(text='Diminuir uma dívida', size_hint=(1, None), height=75))
+
+        layout_payment.add_widget(Label(text='Nome do pagante:', size_hint=(1, None), height=50))
+        layout_payment.input_name = TextInput(size_hint=(1, None), height=50)
+        layout_payment.add_widget(layout_payment.input_name)
+
+        layout_payment.add_widget(Label(text='Valor do pagamento:', size_hint=(1, None), height=50))
+        layout_payment.input_payment = TextInput(size_hint=(1, None), height=50)
+        layout_payment.add_widget(layout_payment.input_payment)
+
+        layout_payment.add_widget(Button(text='Confirmar', on_release=self.confirmation,
+                                         size_hint=(1, None), height=50))
+        layout_payment.label = Label()
+        layout_payment.add_widget(layout_payment.label)
+        layout_payment.add_widget(Button(text='Voltar', on_release=self.back_to_menu,
+                                         size_hint=(1, None), height=50))
+        self.add_widget(layout_payment)
+
+    def confirmation(self, *args):
+        global payment
+        name = layout_payment.input_name.text.title().strip()
+        total_debt = 0
+        exist_client = False
+
+        with open(file) as archive:
+            for c in range(0, lines_in_archive(file)):
+                line = archive.readline().replace('\n', '').split('/')
+                if line[0] == name:
+                    total_debt += float(line[2])
+                    exist_client = True
+
+        if not exist_client:
+            layout_payment.label.text = f'Não existe um cliente {name} registrado!'
+
+        else:
+            if total_debt > 0:
+                product = '**pagamento**'
+                try:
+                    payment = float(layout_payment.input_payment.text.replace(',', '.'))
+                except:
+                    layout_payment.label.text = 'Valor de pagamento inválido!'
+                else:
+                    if total_debt - payment < 0:
+                        layout_payment.label.text = f'{name} tem divida de {total_debt} reais.\n' \
+                                                    f'É impossível reduzir {payment} de {total_debt}!'
+
+                    else:
+                        # OPEN POP UP
+                        def exit_popup(*args):
+                            popup.dismiss()
+
+                        def confirm_popup(*args):
+                            append_in_data(file, f'{name}/{product}/{payment * -1}')
+                            popup.dismiss()
+                            self.manager.current = 'menu'
+                            layout_payment.input_name.text = ''
+                            layout_payment.input_payment.text = ''
+                            layout_payment.label.text = ''
+
+                        content = BoxLayout()
+                        content.orientation = 'vertical'
+                        content.add_widget(Label(text=f'Você realmente deseja quitar a dívida:\n'
+                                                      f'Comprador: {name}\n'
+                                                      f'Preço: {payment}\n'))
+
+                        btn1 = Button(text='Voltar', size_hint=(None, None), size=(375, 50), on_release=exit_popup)
+                        content.add_widget(btn1)
+
+                        btn2 = Button(text='Confirmar', size_hint=(None, None), size=(375, 50),
+                                      on_release=confirm_popup)
+                        content.add_widget(btn2)
+
+                        popup = Popup(title='Confirmação',
+                                      content=content,
+                                      size_hint=(None, None), size=(400, 400), auto_dismiss=False)
+
+                        popup.open()
+                        # END POP UP
+            else:
+                layout_payment.label.text = f'O cliente {name} não possui dívidas.'
+
+    def back_to_menu(self, *args):
+        layout_payment.label.text = ''
+        self.manager.current = 'menu'
+
+
 sm = ScreenManager(transition=FadeTransition())
 sm.add_widget(ScreenMenu(name='menu'))
 sm.add_widget(ScreenRegister(name='register'))
@@ -382,6 +480,7 @@ sm.add_widget(ScreenTotalDebts(name='total_debts'))
 sm.add_widget(ScreenExtract(name='extract'))
 sm.add_widget(ScreenAllDebtors(name='all_debtors'))
 sm.add_widget(ScreenAllDebts(name='all_debts'))
+sm.add_widget(ScreenPayment(name='payment'))
 
 
 class System(App):

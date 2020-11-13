@@ -81,8 +81,8 @@ class ScreenRegister(Screen):
         layout_register.price = TextInput(size_hint=(1, None), height=30, )
         layout_register.add_widget(layout_register.price)
 
-        layout_register.add_widget(Label())
-        layout_register.add_widget(Label())
+        layout_register.error = Label()
+        layout_register.add_widget(layout_register.error)
 
         layout_register.add_widget(Button(text='VOLTAR', size_hint=(1, None), height=50, on_release=self.back_to_menu))
         layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, None), height=50, on_release=self.confirm))
@@ -91,8 +91,16 @@ class ScreenRegister(Screen):
 
     def back_to_menu(self, *args):
         self.manager.current = 'menu'
+        layout_register.error.text = ''
 
     def confirm(self, *args):
+        try:
+            float(layout_register.price.text)
+            layout_register.error.text = ''
+        except:
+            layout_register.error.text = 'Valor digitado inválido!'
+            return 0
+
         buyer = layout_register.buyer.text.title().strip()
         product = layout_register.product.text.strip()
         price = layout_register.price.text.replace(",", ".").strip()

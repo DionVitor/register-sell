@@ -19,6 +19,7 @@ layout_all_debtors = BoxLayout()
 scroll_layout_all_debtors = ScrollView()
 layout_all_debts = BoxLayout()
 layout_payment = BoxLayout()
+layout_remove_data = BoxLayout()
 
 widget_for_scroll_extract = BoxLayout(orientation='vertical')
 widget_for_scroll_all_debtors = BoxLayout(orientation='vertical')
@@ -39,7 +40,7 @@ class ScreenMenu(Screen):
         layout_menu.add_widget(Button(text='Todos os devedores', on_release=self.change_screen_for_all_debtors))
         layout_menu.add_widget(Button(text='Total de dívidas', on_release=self.change_screen_for_all_debts))
         layout_menu.add_widget(Button(text='Diminuir uma dívida', on_release=self.change_screen_for_payment))
-        layout_menu.add_widget(Button(text='Excluir dados'))
+        layout_menu.add_widget(Button(text='Excluir dados', on_release=self.change_screen_for_remove_data))
 
         self.add_widget(layout_menu)
 
@@ -57,6 +58,9 @@ class ScreenMenu(Screen):
 
     def change_screen_for_payment(self, *args):
         self.manager.current = 'payment'
+
+    def change_screen_for_remove_data(self, *args):
+        self.manager.current = 'remove_data'
 
 
 class ScreenRegister(Screen):
@@ -480,6 +484,122 @@ class ScreenPayment(Screen):
         self.manager.current = 'menu'
 
 
+class ScreenRemoveData(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenRemoveData, self).__init__(**kwargs)
+
+        global layout_remove_data
+        layout_remove_data.orientation = 'vertical'
+        layout_remove_data.padding = 10
+        layout_remove_data.spacing = 2.5
+
+        layout_remove_data.add_widget(Label(text='Excluir dados', size_hint=(1, None), height=75))
+        layout_remove_data.add_widget(Label(text='Apagar dados de:',
+                                            size_hint=(1, None), height=50))
+
+        layout_remove_data.name = TextInput(size_hint=(1, None), height=50)
+        layout_remove_data.add_widget(layout_remove_data.name)
+
+        layout_remove_data.add_widget(Button(text='Excluir dados do usuário', size_hint=(1, None), height=50,
+                                             on_release=self.delete_data_confirmation))
+
+        layout_remove_data.label = Label()
+        layout_remove_data.add_widget(layout_remove_data.label)
+
+        layout_remove_data.add_widget(Button(text='Apagar todos os dados', size_hint=(1, None), height=50,
+                                             on_release=self.delete_all_data_confirmation))
+
+        layout_remove_data.add_widget(Button(text='Voltar', size_hint=(1, None), height=50,
+                                             on_release=self.back_to_menu))
+        self.add_widget(layout_remove_data)
+
+    def back_to_menu(self, *args):
+        self.manager.current = 'menu'
+        layout_remove_data.label.text = ''
+        layout_remove_data.name.text = ''
+
+    def delete_data_confirmation(self, *args):
+        with open(file) as archive:
+            global lines
+            lines = archive.readlines()
+
+        global list_with_all_debtors
+        list_with_all_debtors = []
+
+        for line in lines:
+            list_individual = line.replace('\n', '').split('/')
+            if list_individual[0] not in list_with_all_debtors:
+                list_with_all_debtors.append(list_individual[0])
+
+        if layout_remove_data.name.text.title().strip() not in list_with_all_debtors:
+            layout_remove_data.label.text = 'Devedor não encontrado!'
+            return 0
+
+        # POP UP
+        def exit_popup(*args):
+            popup.dismiss()
+
+        def confirm_popup(*args):
+            popup.dismiss()
+            self.manager.current = 'menu'
+            with open(file, 'w') as archive:
+                for line in lines:
+                    list_ind = line.replace('\n', '').split('/')
+                    if list_ind[0] != layout_remove_data.name.text.title().strip():
+                        archive.write(f'{list_ind[0]}/{list_ind[1]}/{list_ind[2]}\n')
+
+            layout_remove_data.label.text = ''
+            layout_remove_data.name.text = ''
+
+        content = BoxLayout()
+        content.orientation = 'vertical'
+        content.add_widget(Label(text=f'Você realmente deseja excluir os dados:\n'
+                                      f'Devedor: {layout_remove_data.name.text.title().strip()}'))
+
+        btn = Button(text='Voltar', size_hint=(None, None), size=(375, 50), on_release=exit_popup)
+        content.add_widget(btn)
+
+        btn2 = Button(text='Confirmar', size_hint=(None, None), size=(375, 50), on_release=confirm_popup)
+        content.add_widget(btn2)
+
+        popup = Popup(title='Confirmação',
+                      content=content,
+                      size_hint=(None, None), size=(400, 400), auto_dismiss=False)
+
+        popup.open()
+        # END - POPUP
+
+    def delete_all_data_confirmation(self, *args):
+        def exit_popup(*args):
+            popup.dismiss()
+
+        def confirm_popup(*args):
+            popup.dismiss()
+            self.manager.current = 'menu'
+
+            with open(file, 'w') as archive:
+                archive.write('')
+
+            layout_remove_data.label.text = ''
+            layout_remove_data.name.text = ''
+
+        content = BoxLayout()
+        content.orientation = 'vertical'
+        content.add_widget(Label(text=f'Você realmente deseja excluir TODOS os dados?\n'))
+
+        btn = Button(text='Voltar', size_hint=(None, None), size=(375, 50), on_release=exit_popup)
+        content.add_widget(btn)
+
+        btn2 = Button(text='Confirmar', size_hint=(None, None), size=(375, 50), on_release=confirm_popup)
+        content.add_widget(btn2)
+
+        popup = Popup(title='Confirmação',
+                      content=content,
+                      size_hint=(None, None), size=(400, 400), auto_dismiss=False)
+
+        popup.open()
+
+
 sm = ScreenManager(transition=FadeTransition())
 sm.add_widget(ScreenMenu(name='menu'))
 sm.add_widget(ScreenRegister(name='register'))
@@ -489,6 +609,7 @@ sm.add_widget(ScreenExtract(name='extract'))
 sm.add_widget(ScreenAllDebtors(name='all_debtors'))
 sm.add_widget(ScreenAllDebts(name='all_debts'))
 sm.add_widget(ScreenPayment(name='payment'))
+sm.add_widget(ScreenRemoveData(name='remove_data'))
 
 
 class System(App):

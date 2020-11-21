@@ -4,9 +4,23 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
-from functions import append_in_data, lines_in_archive
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
+
+def append_in_data(file, cont):
+    with open(file, 'a') as archive:
+        archive.write(f'{cont}\n')
+        archive.close()
+
+
+def lines_in_archive(file):
+    archive = open(file)
+    total = 0
+    for line in archive:
+        total += 1
+    archive.close()
+    return total
+
 
 file = 'banco_de_dados.txt'
 payment = 0
@@ -73,23 +87,23 @@ class ScreenRegister(Screen):
         layout_register.padding = 10
         layout_register.spacing = 2.5
 
-        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, None), height=75, ))
-        layout_register.buyer = TextInput(size_hint=(1, None), height=30, )
+        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, .4)))
+        layout_register.buyer = TextInput(size_hint=(1, .4), multiline=False)
         layout_register.add_widget(layout_register.buyer)
 
-        layout_register.add_widget(Label(text='Produto:', size_hint=(1, None), height=75, ))
-        layout_register.product = TextInput(size_hint=(1, None), height=30, )
+        layout_register.add_widget(Label(text='Produto:', size_hint=(1, .4)))
+        layout_register.product = TextInput(size_hint=(1, .4), multiline=False)
         layout_register.add_widget(layout_register.product)
 
-        layout_register.add_widget(Label(text='Preço:', size_hint=(1, None), height=75, ))
-        layout_register.price = TextInput(size_hint=(1, None), height=30, )
+        layout_register.add_widget(Label(text='Preço:', size_hint=(1, .4)))
+        layout_register.price = TextInput(size_hint=(1, .4), multiline=False)
         layout_register.add_widget(layout_register.price)
 
         layout_register.error = Label()
         layout_register.add_widget(layout_register.error)
 
-        layout_register.add_widget(Button(text='VOLTAR', size_hint=(1, None), height=50, on_release=self.back_to_menu))
-        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, None), height=50, on_release=self.confirm))
+        layout_register.add_widget(Button(text='VOLTAR', size_hint=(1, .4), on_release=self.back_to_menu))
+        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, .4), on_release=self.confirm))
 
         self.add_widget(layout_register)
 
@@ -600,21 +614,24 @@ class ScreenRemoveData(Screen):
         popup.open()
 
 
-sm = ScreenManager(transition=FadeTransition())
-sm.add_widget(ScreenMenu(name='menu'))
-sm.add_widget(ScreenRegister(name='register'))
-sm.add_widget(ScreenSearch(name='search'))
-sm.add_widget(ScreenTotalDebts(name='total_debts'))
-sm.add_widget(ScreenExtract(name='extract'))
-sm.add_widget(ScreenAllDebtors(name='all_debtors'))
-sm.add_widget(ScreenAllDebts(name='all_debts'))
-sm.add_widget(ScreenPayment(name='payment'))
-sm.add_widget(ScreenRemoveData(name='remove_data'))
+class MyScreenManager(ScreenManager):
+    def __init__(self, **kwargs):
+        super(MyScreenManager, self).__init__(**kwargs)
+        self.transition = FadeTransition()
+        self.add_widget(ScreenMenu(name='menu'))
+        self.add_widget(ScreenRegister(name='register'))
+        self.add_widget(ScreenSearch(name='search'))
+        self.add_widget(ScreenTotalDebts(name='total_debts'))
+        self.add_widget(ScreenExtract(name='extract'))
+        self.add_widget(ScreenAllDebtors(name='all_debtors'))
+        self.add_widget(ScreenAllDebts(name='all_debts'))
+        self.add_widget(ScreenPayment(name='payment'))
+        self.add_widget(ScreenRemoveData(name='remove_data'))
 
 
 class System(App):
     def build(self):
-        return sm
+        return MyScreenManager()
 
 
 if __name__ == '__main__':

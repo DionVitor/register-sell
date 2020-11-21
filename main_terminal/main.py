@@ -1,5 +1,5 @@
-from functions import body_of_menu, lines
-from classes import Action
+from main_terminal.functions import body_of_menu, lines
+from main_terminal.classes import Action
 
 option = 0
 list1 = []

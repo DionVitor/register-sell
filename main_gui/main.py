@@ -6,6 +6,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
+from kivy.core.window import Window
+
 
 def append_in_data(file, cont):
     with open(file, 'a') as archive:
@@ -23,7 +25,11 @@ def lines_in_archive(file):
 
 
 file = 'banco_de_dados.txt'
+size_screen = Window.size
+size_screen_x = size_screen[0]
+size_screen_y = size_screen[1]
 payment = 0
+
 layout_register = BoxLayout()
 layout_search = BoxLayout()
 layout_total_debts = BoxLayout()
@@ -86,30 +92,40 @@ class ScreenRegister(Screen):
         layout_register.orientation = 'vertical'
         layout_register.padding = 10
         layout_register.spacing = 2.5
+        base = size_screen_y / 15
+        font = (size_screen_y / 15) - 15
 
-        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, .4)))
-        layout_register.buyer = TextInput(size_hint=(1, .4), multiline=False)
+        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, None), height=base))
+
+        layout_register.buyer = TextInput(size_hint=(1, None), height=base, multiline=False, font_size=font)
         layout_register.add_widget(layout_register.buyer)
 
-        layout_register.add_widget(Label(text='Produto:', size_hint=(1, .4)))
-        layout_register.product = TextInput(size_hint=(1, .4), multiline=False)
+        layout_register.add_widget(Label(text='Produto:', size_hint=(1, None), height=base))
+        layout_register.product = TextInput(size_hint=(1, None), height=base, multiline=False, font_size=font)
         layout_register.add_widget(layout_register.product)
 
-        layout_register.add_widget(Label(text='Preço:', size_hint=(1, .4)))
-        layout_register.price = TextInput(size_hint=(1, .4), multiline=False)
+        layout_register.add_widget(Label(text='Preço:', size_hint=(1, None), height=base))
+        layout_register.price = TextInput(size_hint=(1, None), height=base, multiline=False, font_size=font)
         layout_register.add_widget(layout_register.price)
 
         layout_register.error = Label()
         layout_register.add_widget(layout_register.error)
 
-        layout_register.add_widget(Button(text='VOLTAR', size_hint=(1, .4), on_release=self.back_to_menu))
-        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, .4), on_release=self.confirm))
+        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, None), height=base, on_release=self.confirm))
 
         self.add_widget(layout_register)
 
-    def back_to_menu(self, *args):
-        self.manager.current = 'menu'
-        layout_register.error.text = ''
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            self.manager.current = 'menu'
+            layout_register.error.text = ''
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
 
     def confirm(self, *args):
         try:
@@ -175,11 +191,18 @@ class ScreenSearch(Screen):
         layout_search.add_widget(Button(text='Extrato de vendas', size_hint=(1, None), height=100,
                                         on_release=self.change_screen_for_extract))
         layout_search.add_widget(Label())
-        layout_search.add_widget(Button(text='Voltar', size_hint=(1, None), height=50, on_release=self.back_to_menu))
         self.add_widget(layout_search)
 
-    def back_to_menu(self, *args):
-        self.manager.current = 'menu'
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
 
     def change_screen_for_total_debts(self, *args):
         self.manager.current = 'total_debts'
@@ -208,15 +231,20 @@ class ScreenTotalDebts(Screen):
         layout_total_debts.infos = Label()
         layout_total_debts.add_widget(layout_total_debts.infos)
 
-        layout_total_debts.add_widget(Button(text='Voltar', size_hint=(1, None), height=50,
-                                             on_release=self.back_to_search))
-
         self.add_widget(layout_total_debts)
 
-    def back_to_search(self, *args):
-        layout_total_debts.search.text = ''
-        layout_total_debts.infos.text = ''
-        self.manager.current = 'search'
+    def back_to_search(self, window, key, *args):
+        if key == 27:
+            layout_total_debts.search.text = ''
+            layout_total_debts.infos.text = ''
+            self.manager.current = 'search'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_search)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_search)
 
     def search(self, *args):
         search = layout_total_debts.search.text.title()
@@ -273,7 +301,6 @@ class ScreenExtract(Screen):
         layout_extract.total_debts = Label(text='Total: R$', size_hint=(1, None), height=50)
         layout_extract.add_widget(layout_extract.total_debts)
 
-        layout_extract.add_widget(Button(text='Voltar', size_hint=(1, None), height=50, on_release=self.back_to_search))
 
         self.add_widget(layout_extract)
 
@@ -306,12 +333,20 @@ class ScreenExtract(Screen):
 
         widget_for_scroll_extract.height = 75 * cont
 
-    def back_to_search(self, *args):
-        layout_extract.search.text = ''
-        widget_for_scroll_extract.clear_widgets()
-        layout_extract.label_of_client.text = 'Cliente: '
-        layout_extract.total_debts.text = 'Total: R$'
-        self.manager.current = 'search'
+    def back_to_search(self, window, key, *args):
+        if key == 27:
+            layout_extract.search.text = ''
+            widget_for_scroll_extract.clear_widgets()
+            layout_extract.label_of_client.text = 'Cliente: '
+            layout_extract.total_debts.text = 'Total: R$'
+            self.manager.current = 'search'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_search)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_search)
 
 
 class ScreenAllDebtors(Screen):
@@ -334,14 +369,19 @@ class ScreenAllDebtors(Screen):
 
         layout_all_debtors.add_widget(scroll_layout_all_debtors)
 
-        layout_all_debtors.add_widget(Button(text='Voltar', size_hint=(1, None), height=50,
-                                             on_release=self.back_to_menu))
-
         self.add_widget(layout_all_debtors)
 
-    def back_to_menu(self, *args):
-        widget_for_scroll_all_debtors.clear_widgets()
-        self.manager.current = 'menu'
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            widget_for_scroll_all_debtors.clear_widgets()
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
 
     def search_all_debtors(self, *args):
         scroll_layout_all_debtors.clear_widgets()
@@ -384,14 +424,19 @@ class ScreenAllDebts(Screen):
         layout_all_debts.infos = Label(text='O valor total de dívida é:')
         layout_all_debts.add_widget(layout_all_debts.infos)
 
-        layout_all_debts.add_widget(Button(text='Voltar', size_hint=(1, None), height=50,
-                                           on_release=self.back_to_menu))
-
         self.add_widget(layout_all_debts)
 
-    def back_to_menu(self, *args):
-        layout_all_debts.infos.text = 'O valor total da dívida é:'
-        self.manager.current = 'menu'
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            layout_all_debts.infos.text = 'O valor total da dívida é:'
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
 
     def search_all_debts(self, *args):
         total = 0
@@ -426,8 +471,7 @@ class ScreenPayment(Screen):
                                          size_hint=(1, None), height=50))
         layout_payment.label = Label()
         layout_payment.add_widget(layout_payment.label)
-        layout_payment.add_widget(Button(text='Voltar', on_release=self.back_to_menu,
-                                         size_hint=(1, None), height=50))
+
         self.add_widget(layout_payment)
 
     def confirmation(self, *args):
@@ -493,9 +537,17 @@ class ScreenPayment(Screen):
             else:
                 layout_payment.label.text = f'O cliente {name} não possui dívidas.'
 
-    def back_to_menu(self, *args):
-        layout_payment.label.text = ''
-        self.manager.current = 'menu'
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            layout_payment.label.text = ''
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
 
 
 class ScreenRemoveData(Screen):
@@ -523,14 +575,20 @@ class ScreenRemoveData(Screen):
         layout_remove_data.add_widget(Button(text='Apagar todos os dados', size_hint=(1, None), height=50,
                                              on_release=self.delete_all_data_confirmation))
 
-        layout_remove_data.add_widget(Button(text='Voltar', size_hint=(1, None), height=50,
-                                             on_release=self.back_to_menu))
         self.add_widget(layout_remove_data)
 
-    def back_to_menu(self, *args):
-        self.manager.current = 'menu'
-        layout_remove_data.label.text = ''
-        layout_remove_data.name.text = ''
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            layout_remove_data.label.text = ''
+            layout_remove_data.name.text = ''
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
 
     def delete_data_confirmation(self, *args):
         with open(file) as archive:

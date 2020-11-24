@@ -25,23 +25,29 @@ def lines_in_archive(file):
 
 
 file = 'banco_de_dados.txt'
+Window.size = (360, 640)  # REMOVER
 size_screen = Window.size
-size_screen_x = size_screen[0]
-size_screen_y = size_screen[1]
+
+size_screen_y = 640  # = size_screen[1]
 payment = 0
 
-layout_register = BoxLayout()
-layout_search = BoxLayout()
-layout_total_debts = BoxLayout()
-layout_extract = BoxLayout()
-scroll_layout_extract = ScrollView()
-layout_all_debtors = BoxLayout()
-scroll_layout_all_debtors = ScrollView()
-layout_all_debts = BoxLayout()
-layout_payment = BoxLayout()
-layout_remove_data = BoxLayout()
+default_orientation = 'vertical'
+default_padding = 10
+default_spacing = 2.5
 
+layout_register = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+layout_search = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+layout_total_debts = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+layout_extract = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+layout_all_debtors = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+layout_all_debts = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+layout_payment = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+layout_remove_data = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+scroll_layout_extract = ScrollView()
 widget_for_scroll_extract = BoxLayout(orientation='vertical')
+
+scroll_layout_all_debtors = ScrollView()
 widget_for_scroll_all_debtors = BoxLayout(orientation='vertical')
 
 
@@ -89,9 +95,6 @@ class ScreenRegister(Screen):
 
         global layout_register
 
-        layout_register.orientation = 'vertical'
-        layout_register.padding = 10
-        layout_register.spacing = 2.5
         base = size_screen_y / 15
         font = (size_screen_y / 15) - 15
 
@@ -180,10 +183,6 @@ class ScreenSearch(Screen):
 
         global layout_search
 
-        layout_search.orientation = 'vertical'
-        layout_search.padding = 10
-        layout_search.spacing = 2.5
-
         layout_search.add_widget(Label(text='Pesquisar por cliente', font_size=25, size_hint=(1, None), height=50))
         layout_search.add_widget(Label(size_hint=(1, None), height=110))
         layout_search.add_widget(Button(text='Total de dívidas', size_hint=(1, None), height=100,
@@ -216,9 +215,6 @@ class ScreenTotalDebts(Screen):
         super(ScreenTotalDebts, self).__init__(**kwargs)
 
         global layout_total_debts
-        layout_total_debts.orientation = 'vertical'
-        layout_total_debts.padding = 10
-        layout_total_debts.spacing = 2.5
 
         layout_total_debts.add_widget(Label(text='Nome do cliente:', size_hint=(1, None), height=100, font_size=20))
 
@@ -280,10 +276,6 @@ class ScreenExtract(Screen):
         global scroll_layout_extract
         global widget_for_scroll_extract
 
-        layout_extract.orientation = 'vertical'
-        layout_extract.padding = 10
-        layout_extract.spacing = 2.5
-
         layout_extract.add_widget(Label(text='Nome do cliente:', size_hint=(1, None), height=50, font_size=20))
         layout_extract.search = TextInput(size_hint=(1, None), height=50)
         layout_extract.add_widget(layout_extract.search)
@@ -300,7 +292,6 @@ class ScreenExtract(Screen):
 
         layout_extract.total_debts = Label(text='Total: R$', size_hint=(1, None), height=50)
         layout_extract.add_widget(layout_extract.total_debts)
-
 
         self.add_widget(layout_extract)
 
@@ -360,9 +351,6 @@ class ScreenAllDebtors(Screen):
         widget_for_scroll_all_debtors.clear_widgets()
         widget_for_scroll_all_debtors.size_hint_y = None
 
-        layout_all_debtors.orientation = 'vertical'
-        layout_all_debtors.padding = 10
-        layout_all_debtors.spacing = 2.5
         layout_all_debtors.add_widget(Label(text='Todos os devedores:', size_hint=(1, None), height=75))
         layout_all_debtors.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
                                              on_release=self.search_all_debtors))
@@ -413,10 +401,6 @@ class ScreenAllDebts(Screen):
         super(ScreenAllDebts, self).__init__(**kwargs)
         global layout_all_debts
 
-        layout_all_debts.orientation = 'vertical'
-        layout_all_debts.padding = 10
-        layout_all_debts.spacing = 2.5
-
         layout_all_debts.add_widget(Label(text='Todos de dívidas:', size_hint=(1, None), height=75))
         layout_all_debts.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
                                            on_release=self.search_all_debts))
@@ -453,9 +437,6 @@ class ScreenPayment(Screen):
         super(ScreenPayment, self).__init__(**kwargs)
 
         global layout_payment
-        layout_payment.orientation = 'vertical'
-        layout_payment.padding = 10
-        layout_payment.spacing = 2.5
 
         layout_payment.add_widget(Label(text='Diminuir uma dívida', size_hint=(1, None), height=75))
 
@@ -555,9 +536,6 @@ class ScreenRemoveData(Screen):
         super(ScreenRemoveData, self).__init__(**kwargs)
 
         global layout_remove_data
-        layout_remove_data.orientation = 'vertical'
-        layout_remove_data.padding = 10
-        layout_remove_data.spacing = 2.5
 
         layout_remove_data.add_widget(Label(text='Excluir dados', size_hint=(1, None), height=75))
         layout_remove_data.add_widget(Label(text='Apagar dados de:',

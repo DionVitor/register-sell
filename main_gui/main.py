@@ -7,6 +7,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
+from kivy.graphics.vertex_instructions import Rectangle
+from kivy.graphics.context_instructions import Color
 
 
 def append_in_data(file, cont):
@@ -24,25 +26,73 @@ def lines_in_archive(file):
     return total
 
 
-file = 'banco_de_dados.txt'
 Window.size = (360, 640)  # REMOVER
 size_screen = Window.size
 
+size_screen_x = 360  # = size_screen[0]
 size_screen_y = 640  # = size_screen[1]
-payment = 0
 
+
+payment = 0
+file = 'banco_de_dados.txt'
 default_orientation = 'vertical'
 default_padding = 10
 default_spacing = 2.5
+default_red = 0
+default_green = 1
+default_blue = 1
+default_alpha = .5
+
 
 layout_register = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_register.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
+
 layout_search = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_search.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
 layout_total_debts = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_total_debts.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
 layout_extract = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_extract.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
 layout_all_debtors = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_all_debtors.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
 layout_all_debts = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_all_debts.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
 layout_payment = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_payment.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
 layout_remove_data = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
+
+with layout_remove_data.canvas:
+    Color(default_red, default_green, default_blue, default_alpha)
+    Rectangle(size=(size_screen_x, size_screen_y))
+
 
 scroll_layout_extract = ScrollView()
 widget_for_scroll_extract = BoxLayout(orientation='vertical')
@@ -59,6 +109,10 @@ class ScreenMenu(Screen):
         layout_menu.orientation = 'vertical'
         layout_menu.padding = 10
         layout_menu.spacing = 2.5
+
+        with layout_menu.canvas:
+            Color(default_red, default_green, default_blue, default_alpha)
+            Rectangle(size=(size_screen_x, size_screen_y))
 
         layout_menu.add_widget(Label(text='MENU', font_size=40))
         layout_menu.add_widget(Button(text='Cadastrar dívida', on_release=self.change_screen_for_register))

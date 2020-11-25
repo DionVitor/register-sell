@@ -3,27 +3,13 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.textinput import TextInput
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.graphics.context_instructions import Color
-
-
-def append_in_data(file, cont):
-    with open(file, 'a') as archive:
-        archive.write(f'{cont}\n')
-        archive.close()
-
-
-def lines_in_archive(file):
-    archive = open(file)
-    total = 0
-    for line in archive:
-        total += 1
-    archive.close()
-    return total
+from default_widgets import DefaultTextInput
+from functions import lines_in_archive, append_in_data
 
 
 Window.size = (360, 640)  # REMOVER
@@ -37,12 +23,11 @@ payment = 0
 file = 'banco_de_dados.txt'
 default_orientation = 'vertical'
 default_padding = 10
-default_spacing = 2.5
-default_red = 0
+default_spacing = 10
+default_red = 1
 default_green = 1
 default_blue = 1
-default_alpha = .5
-
+default_alpha = 1
 
 layout_register = BoxLayout(orientation=default_orientation, padding=default_padding, spacing=default_spacing)
 
@@ -150,25 +135,24 @@ class ScreenRegister(Screen):
         global layout_register
 
         base = size_screen_y / 15
-        font = (size_screen_y / 15) - 15
+        default_font_for_text_input = (size_screen_y / 35)
 
-        layout_register.add_widget(Label(text='Comprador:', size_hint=(1, None), height=base))
-
-        layout_register.buyer = TextInput(size_hint=(1, None), height=base, multiline=False, font_size=font)
+        layout_register.add_widget(Label(text='Cadastro', font_size=default_font_for_text_input * 1.5,
+                                         size_hint=(None, None), height=base * 3, pos_hint={'x': .1}, color=(0, 0, 0)))
+        
+        layout_register.buyer = DefaultTextInput(size_screen, hint_text='Comprador')
         layout_register.add_widget(layout_register.buyer)
 
-        layout_register.add_widget(Label(text='Produto:', size_hint=(1, None), height=base))
-        layout_register.product = TextInput(size_hint=(1, None), height=base, multiline=False, font_size=font)
+        layout_register.product = DefaultTextInput(size_screen, hint_text='Produto')
         layout_register.add_widget(layout_register.product)
 
-        layout_register.add_widget(Label(text='Preço:', size_hint=(1, None), height=base))
-        layout_register.price = TextInput(size_hint=(1, None), height=base, multiline=False, font_size=font)
+        layout_register.price = DefaultTextInput(size_screen, hint_text='Preço')
         layout_register.add_widget(layout_register.price)
+
+        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, None), height=base, on_release=self.confirm))
 
         layout_register.error = Label()
         layout_register.add_widget(layout_register.error)
-
-        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, None), height=base, on_release=self.confirm))
 
         self.add_widget(layout_register)
 
@@ -270,9 +254,7 @@ class ScreenTotalDebts(Screen):
 
         global layout_total_debts
 
-        layout_total_debts.add_widget(Label(text='Nome do cliente:', size_hint=(1, None), height=100, font_size=20))
-
-        layout_total_debts.search = TextInput(multiline=False, size_hint=(1, None), height=50)
+        layout_total_debts.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
         layout_total_debts.add_widget(layout_total_debts.search)
 
         layout_total_debts.add_widget(Button(text='Procurar', size_hint=(1, None), height=50,
@@ -330,9 +312,9 @@ class ScreenExtract(Screen):
         global scroll_layout_extract
         global widget_for_scroll_extract
 
-        layout_extract.add_widget(Label(text='Nome do cliente:', size_hint=(1, None), height=50, font_size=20))
-        layout_extract.search = TextInput(size_hint=(1, None), height=50)
+        layout_extract.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
         layout_extract.add_widget(layout_extract.search)
+
         layout_extract.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
                                          on_release=self.search_extract))
 
@@ -494,12 +476,10 @@ class ScreenPayment(Screen):
 
         layout_payment.add_widget(Label(text='Diminuir uma dívida', size_hint=(1, None), height=75))
 
-        layout_payment.add_widget(Label(text='Nome do pagante:', size_hint=(1, None), height=50))
-        layout_payment.input_name = TextInput(size_hint=(1, None), height=50)
+        layout_payment.input_name = DefaultTextInput(size_screen, hint_text='Nome do pagante')
         layout_payment.add_widget(layout_payment.input_name)
 
-        layout_payment.add_widget(Label(text='Valor do pagamento:', size_hint=(1, None), height=50))
-        layout_payment.input_payment = TextInput(size_hint=(1, None), height=50)
+        layout_payment.input_payment = DefaultTextInput(size_screen, hint_text='Valor do pagamento')
         layout_payment.add_widget(layout_payment.input_payment)
 
         layout_payment.add_widget(Button(text='Confirmar', on_release=self.confirmation,
@@ -592,10 +572,8 @@ class ScreenRemoveData(Screen):
         global layout_remove_data
 
         layout_remove_data.add_widget(Label(text='Excluir dados', size_hint=(1, None), height=75))
-        layout_remove_data.add_widget(Label(text='Apagar dados de:',
-                                            size_hint=(1, None), height=50))
 
-        layout_remove_data.name = TextInput(size_hint=(1, None), height=50)
+        layout_remove_data.name = DefaultTextInput(size_screen, hint_text='Apagar dados de')
         layout_remove_data.add_widget(layout_remove_data.name)
 
         layout_remove_data.add_widget(Button(text='Excluir dados do usuário', size_hint=(1, None), height=50,

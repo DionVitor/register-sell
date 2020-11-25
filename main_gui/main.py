@@ -6,7 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
-from default_widgets import DefaultTextInput, DefaultButton
+from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel
 from default_layouts import DefaultBoxLayout
 from functions import lines_in_archive, append_in_data
 
@@ -78,11 +78,7 @@ class ScreenRegister(Screen):
 
         global layout_register
 
-        base = size_screen_y / 15
-        default_font_for_text_input = (size_screen_y / 35)
-
-        layout_register.add_widget(Label(text='Cadastro', font_size=default_font_for_text_input * 1.5,
-                                         size_hint=(None, None), height=base * 3, pos_hint={'x': .1}, color=(0, 0, 0)))
+        layout_register.add_widget(DefaultHeadLabel(size_screen, text='Cadastro'))
         
         layout_register.buyer = DefaultTextInput(size_screen, hint_text='Comprador')
         layout_register.add_widget(layout_register.buyer)
@@ -165,8 +161,8 @@ class ScreenSearch(Screen):
 
         global layout_search
 
-        layout_search.add_widget(Label(text='Pesquisar por cliente', font_size=25, size_hint=(1, None), height=50))
-        layout_search.add_widget(Label(size_hint=(1, None), height=110))
+        layout_search.add_widget(DefaultHeadLabel(size_screen, text='Pesquisar por cliente'))
+
         layout_search.add_widget(DefaultButton(screen_size=(size_screen_x, size_screen_y * 2), text='Total de dívidas',
                                                on_release=self.change_screen_for_total_debts))
         layout_search.add_widget(DefaultButton(screen_size=(size_screen_x, size_screen_y * 2), text='Extrato de vendas',
@@ -330,7 +326,7 @@ class ScreenAllDebtors(Screen):
         widget_for_scroll_all_debtors.clear_widgets()
         widget_for_scroll_all_debtors.size_hint_y = None
 
-        layout_all_debtors.add_widget(Label(text='Todos os devedores:', size_hint=(1, None), height=75))
+        layout_all_debtors.add_widget(DefaultHeadLabel(size_screen, text='Todos os devedores:'))
         layout_all_debtors.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debtors))
 
         layout_all_debtors.add_widget(scroll_layout_all_debtors)
@@ -379,7 +375,7 @@ class ScreenAllDebts(Screen):
         super(ScreenAllDebts, self).__init__(**kwargs)
         global layout_all_debts
 
-        layout_all_debts.add_widget(Label(text='Todos de dívidas:', size_hint=(1, None), height=75))
+        layout_all_debts.add_widget(DefaultHeadLabel(size_screen, text='Total de dívidas:'))
         layout_all_debts.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debts))
 
         layout_all_debts.infos = Label(text='O valor total de dívida é:')
@@ -415,7 +411,7 @@ class ScreenPayment(Screen):
 
         global layout_payment
 
-        layout_payment.add_widget(Label(text='Diminuir uma dívida', size_hint=(1, None), height=75))
+        layout_payment.add_widget(DefaultHeadLabel(size_screen, text='Realizar pagamento'))
 
         layout_payment.input_name = DefaultTextInput(size_screen, hint_text='Nome do pagante')
         layout_payment.add_widget(layout_payment.input_name)
@@ -512,7 +508,7 @@ class ScreenRemoveData(Screen):
 
         global layout_remove_data
 
-        layout_remove_data.add_widget(Label(text='Excluir dados', size_hint=(1, None), height=75))
+        layout_remove_data.add_widget(DefaultHeadLabel(size_screen, text='Excluir dados'))
 
         layout_remove_data.name = DefaultTextInput(size_screen, hint_text='Apagar dados de')
         layout_remove_data.add_widget(layout_remove_data.name)

@@ -6,7 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
-from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel
+from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel, DefaultLabel
 from default_layouts import DefaultBoxLayout
 from functions import lines_in_archive, append_in_data
 
@@ -43,7 +43,7 @@ class ScreenMenu(Screen):
         layout_menu = DefaultBoxLayout(size_screen)
         layout_menu.spacing = 2.5
 
-        layout_menu.add_widget(Label(text='MENU', font_size=40))
+        layout_menu.add_widget(DefaultLabel(text='MENU', font_size=size_screen[1] / 15))
         layout_menu.add_widget(Button(text='Cadastrar dívida', on_release=self.change_screen_for_register))
         layout_menu.add_widget(Button(text='Buscar dívida', on_release=self.change_screen_for_search))
         layout_menu.add_widget(Button(text='Todos os devedores', on_release=self.change_screen_for_all_debtors))
@@ -91,7 +91,7 @@ class ScreenRegister(Screen):
 
         layout_register.add_widget(DefaultButton(size_screen, text='CONFIRMAR', on_release=self.confirm))
 
-        layout_register.error = Label()
+        layout_register.error = DefaultLabel()
         layout_register.add_widget(layout_register.error)
 
         self.add_widget(layout_register)
@@ -168,7 +168,7 @@ class ScreenSearch(Screen):
         layout_search.add_widget(DefaultButton(screen_size=(size_screen_x, size_screen_y * 2), text='Extrato de vendas',
                                                on_release=self.change_screen_for_extract))
 
-        layout_search.add_widget(Label())
+        layout_search.add_widget(DefaultLabel())
         self.add_widget(layout_search)
 
     def back_to_menu(self, window, key, *args):
@@ -195,12 +195,14 @@ class ScreenTotalDebts(Screen):
 
         global layout_total_debts
 
+        layout_total_debts.add_widget(DefaultHeadLabel(size_screen, text='Total de dívidas'))
+
         layout_total_debts.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
         layout_total_debts.add_widget(layout_total_debts.search)
 
         layout_total_debts.add_widget(DefaultButton(size_screen, text='Procurar', on_release=self.search))
 
-        layout_total_debts.infos = Label()
+        layout_total_debts.infos = DefaultLabel(halign='center')
         layout_total_debts.add_widget(layout_total_debts.infos)
 
         self.add_widget(layout_total_debts)
@@ -252,12 +254,14 @@ class ScreenExtract(Screen):
         global scroll_layout_extract
         global widget_for_scroll_extract
 
+        layout_extract.add_widget(DefaultHeadLabel(size_screen, text='Extrato'))
+
         layout_extract.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
         layout_extract.add_widget(layout_extract.search)
 
         layout_extract.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_extract))
 
-        layout_extract.label_of_client = Label(text='Cliente: ', size_hint=(1, None), height=50)
+        layout_extract.label_of_client = DefaultLabel(text='Cliente: ', size_hint=(1, None), height=size_screen[1] / 13)
         layout_extract.add_widget(layout_extract.label_of_client)
 
         widget_for_scroll_extract.size_hint_y = None
@@ -265,7 +269,7 @@ class ScreenExtract(Screen):
 
         layout_extract.add_widget(scroll_layout_extract)
 
-        layout_extract.total_debts = Label(text='Total: R$', size_hint=(1, None), height=50)
+        layout_extract.total_debts = DefaultLabel(text='Total: R$', size_hint=(1, None), height=size_screen[1] / 13)
         layout_extract.add_widget(layout_extract.total_debts)
 
         self.add_widget(layout_extract)
@@ -285,8 +289,9 @@ class ScreenExtract(Screen):
                 if line[0] == layout_extract.search.text.title():
                     total_debts += float(line[2])
                     if line[1] != '**pagamento**':
-                        widget_for_scroll_extract.add_widget(Label(text=f'Compra: {line[1]}\nPreço: {line[2]}',
-                                                                   size_hint=(1, None), height=75))
+                        widget_for_scroll_extract.add_widget(DefaultLabel(text=f'Compra: {line[1]}\nPreço: {line[2]}',
+                                                                          size_hint=(1, None),
+                                                                          height=size_screen[1] / 10))
                         cont += 1
                     else:
                         list_with_payments.append(f'{line[2]}')
@@ -294,7 +299,8 @@ class ScreenExtract(Screen):
             layout_extract.total_debts.text = f'Total: R${total_debts}'
 
             for items in list_with_payments:
-                widget_for_scroll_extract.add_widget(Label(text=f'PAGAMENTO\nPreço: {items.replace("-", "")}'))
+                widget_for_scroll_extract.add_widget(DefaultLabel(text=f'PAGAMENTO\nPreço: {items.replace("-", "")}',
+                                                                  size_hint=(1, None), height=size_screen[1] / 10))
                 cont += 1
 
         widget_for_scroll_extract.height = 75 * cont
@@ -326,7 +332,7 @@ class ScreenAllDebtors(Screen):
         widget_for_scroll_all_debtors.clear_widgets()
         widget_for_scroll_all_debtors.size_hint_y = None
 
-        layout_all_debtors.add_widget(DefaultHeadLabel(size_screen, text='Todos os devedores:'))
+        layout_all_debtors.add_widget(DefaultHeadLabel(size_screen, text='Todos os devedores'))
         layout_all_debtors.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debtors))
 
         layout_all_debtors.add_widget(scroll_layout_all_debtors)
@@ -356,14 +362,15 @@ class ScreenAllDebtors(Screen):
                 line = archive.readline().replace('\n', '').split('/')
 
                 if line[0] not in list_with_debtors:
-                    widget_for_scroll_all_debtors.add_widget(Label(text=f'{cont + 1} - {line[0]}', size_hint=(1, None),
-                                                                   height=50))
+                    widget_for_scroll_all_debtors.add_widget(DefaultLabel(text=f'{cont + 1} - {line[0]}',
+                                                                          size_hint=(1, None),
+                                                                          height=size_screen[1] / 13))
                     cont += 1
                     list_with_debtors.append(line[0])
 
         if not list_with_debtors:
-            widget_for_scroll_all_debtors.add_widget(Label(text='Não existe devedores cadastrados!',
-                                                           size_hint=(1, None), height=50))
+            widget_for_scroll_all_debtors.add_widget(DefaultLabel(text='Não existe devedores cadastrados!',
+                                                           size_hint=(1, None), height=size_screen[1] / 13))
             cont = 1
 
         widget_for_scroll_all_debtors.height = 50 * cont
@@ -375,10 +382,10 @@ class ScreenAllDebts(Screen):
         super(ScreenAllDebts, self).__init__(**kwargs)
         global layout_all_debts
 
-        layout_all_debts.add_widget(DefaultHeadLabel(size_screen, text='Total de dívidas:'))
+        layout_all_debts.add_widget(DefaultHeadLabel(size_screen, text='Total de dívidas'))
         layout_all_debts.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debts))
 
-        layout_all_debts.infos = Label(text='O valor total de dívida é:')
+        layout_all_debts.infos = DefaultLabel(text='O valor total de dívida é:')
         layout_all_debts.add_widget(layout_all_debts.infos)
 
         self.add_widget(layout_all_debts)
@@ -421,7 +428,7 @@ class ScreenPayment(Screen):
 
         layout_payment.add_widget(DefaultButton(size_screen, text='Confirmar', on_release=self.confirmation))
 
-        layout_payment.label = Label()
+        layout_payment.label = DefaultLabel()
         layout_payment.add_widget(layout_payment.label)
 
         self.add_widget(layout_payment)
@@ -516,7 +523,7 @@ class ScreenRemoveData(Screen):
         layout_remove_data.add_widget(DefaultButton(size_screen, text='Excluir dados do usuário',
                                                     on_release=self.delete_data_confirmation))
 
-        layout_remove_data.label = Label()
+        layout_remove_data.label = DefaultLabel()
         layout_remove_data.add_widget(layout_remove_data.label)
 
         layout_remove_data.add_widget(DefaultButton(size_screen, text='Apagar todos os dados',

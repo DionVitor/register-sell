@@ -32,3 +32,10 @@ class DefaultHeadLabel(Label):
 
         self.text_size = (screen_size[0] - 20, None)
         self.halign = 'left'
+
+
+class DefaultLabel(Label):
+    def __init__(self, **kwargs):
+        super(DefaultLabel, self).__init__(**kwargs)
+
+        self.color = (0, 0, 0, 1)

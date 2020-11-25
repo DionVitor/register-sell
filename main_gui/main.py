@@ -8,7 +8,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.graphics.context_instructions import Color
-from default_widgets import DefaultTextInput
+from default_widgets import DefaultTextInput, DefaultButton
 from functions import lines_in_archive, append_in_data
 
 
@@ -149,7 +149,7 @@ class ScreenRegister(Screen):
         layout_register.price = DefaultTextInput(size_screen, hint_text='Preço')
         layout_register.add_widget(layout_register.price)
 
-        layout_register.add_widget(Button(text='CONFIRMAR', size_hint=(1, None), height=base, on_release=self.confirm))
+        layout_register.add_widget(DefaultButton(size_screen, text='CONFIRMAR', on_release=self.confirm))
 
         layout_register.error = Label()
         layout_register.add_widget(layout_register.error)
@@ -223,10 +223,11 @@ class ScreenSearch(Screen):
 
         layout_search.add_widget(Label(text='Pesquisar por cliente', font_size=25, size_hint=(1, None), height=50))
         layout_search.add_widget(Label(size_hint=(1, None), height=110))
-        layout_search.add_widget(Button(text='Total de dívidas', size_hint=(1, None), height=100,
-                                        on_release=self.change_screen_for_total_debts))
-        layout_search.add_widget(Button(text='Extrato de vendas', size_hint=(1, None), height=100,
-                                        on_release=self.change_screen_for_extract))
+        layout_search.add_widget(DefaultButton(screen_size=(size_screen_x, size_screen_y * 2), text='Total de dívidas',
+                                               on_release=self.change_screen_for_total_debts))
+        layout_search.add_widget(DefaultButton(screen_size=(size_screen_x, size_screen_y * 2), text='Extrato de vendas',
+                                               on_release=self.change_screen_for_extract))
+
         layout_search.add_widget(Label())
         self.add_widget(layout_search)
 
@@ -257,8 +258,7 @@ class ScreenTotalDebts(Screen):
         layout_total_debts.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
         layout_total_debts.add_widget(layout_total_debts.search)
 
-        layout_total_debts.add_widget(Button(text='Procurar', size_hint=(1, None), height=50,
-                                             on_release=self.search))
+        layout_total_debts.add_widget(DefaultButton(size_screen, text='Procurar', on_release=self.search))
 
         layout_total_debts.infos = Label()
         layout_total_debts.add_widget(layout_total_debts.infos)
@@ -315,8 +315,7 @@ class ScreenExtract(Screen):
         layout_extract.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
         layout_extract.add_widget(layout_extract.search)
 
-        layout_extract.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
-                                         on_release=self.search_extract))
+        layout_extract.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_extract))
 
         layout_extract.label_of_client = Label(text='Cliente: ', size_hint=(1, None), height=50)
         layout_extract.add_widget(layout_extract.label_of_client)
@@ -388,8 +387,7 @@ class ScreenAllDebtors(Screen):
         widget_for_scroll_all_debtors.size_hint_y = None
 
         layout_all_debtors.add_widget(Label(text='Todos os devedores:', size_hint=(1, None), height=75))
-        layout_all_debtors.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
-                                             on_release=self.search_all_debtors))
+        layout_all_debtors.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debtors))
 
         layout_all_debtors.add_widget(scroll_layout_all_debtors)
 
@@ -438,8 +436,7 @@ class ScreenAllDebts(Screen):
         global layout_all_debts
 
         layout_all_debts.add_widget(Label(text='Todos de dívidas:', size_hint=(1, None), height=75))
-        layout_all_debts.add_widget(Button(text='Pesquisar', size_hint=(1, None), height=50,
-                                           on_release=self.search_all_debts))
+        layout_all_debts.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debts))
 
         layout_all_debts.infos = Label(text='O valor total de dívida é:')
         layout_all_debts.add_widget(layout_all_debts.infos)
@@ -482,8 +479,8 @@ class ScreenPayment(Screen):
         layout_payment.input_payment = DefaultTextInput(size_screen, hint_text='Valor do pagamento')
         layout_payment.add_widget(layout_payment.input_payment)
 
-        layout_payment.add_widget(Button(text='Confirmar', on_release=self.confirmation,
-                                         size_hint=(1, None), height=50))
+        layout_payment.add_widget(DefaultButton(size_screen, text='Confirmar', on_release=self.confirmation))
+
         layout_payment.label = Label()
         layout_payment.add_widget(layout_payment.label)
 
@@ -576,14 +573,14 @@ class ScreenRemoveData(Screen):
         layout_remove_data.name = DefaultTextInput(size_screen, hint_text='Apagar dados de')
         layout_remove_data.add_widget(layout_remove_data.name)
 
-        layout_remove_data.add_widget(Button(text='Excluir dados do usuário', size_hint=(1, None), height=50,
-                                             on_release=self.delete_data_confirmation))
+        layout_remove_data.add_widget(DefaultButton(size_screen, text='Excluir dados do usuário',
+                                                    on_release=self.delete_data_confirmation))
 
         layout_remove_data.label = Label()
         layout_remove_data.add_widget(layout_remove_data.label)
 
-        layout_remove_data.add_widget(Button(text='Apagar todos os dados', size_hint=(1, None), height=50,
-                                             on_release=self.delete_all_data_confirmation))
+        layout_remove_data.add_widget(DefaultButton(size_screen, text='Apagar todos os dados',
+                                                    on_release=self.delete_all_data_confirmation))
 
         self.add_widget(layout_remove_data)
 

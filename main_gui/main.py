@@ -80,7 +80,7 @@ class ScreenRegister(Screen):
         global layout_register
 
         layout_register.add_widget(DefaultHeadLabel(size_screen, text='Cadastro'))
-        
+
         layout_register.buyer = DefaultTextInput(size_screen, hint_text='Comprador')
         layout_register.add_widget(layout_register.buyer)
 
@@ -111,7 +111,8 @@ class ScreenRegister(Screen):
 
     def confirm(self, *args):
         try:
-            float(layout_register.price.text)
+            valor = layout_register.price.text.replace(',', '.').strip()
+            float(valor)
             layout_register.error.text = ''
         except:
             layout_register.error.text = 'Valor digitado inválido!'

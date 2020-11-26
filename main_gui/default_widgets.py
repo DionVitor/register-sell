@@ -1,6 +1,7 @@
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 
 
 class DefaultTextInput(TextInput):
@@ -39,3 +40,21 @@ class DefaultLabel(Label):
         super(DefaultLabel, self).__init__(**kwargs)
 
         self.color = (0, 0, 0, 1)
+
+
+class DefaultPopup(Popup):
+    def __init__(self, screen_size: tuple, **kwargs):
+        super(DefaultPopup, self).__init__(**kwargs)
+
+        self.size_hint = (None, None)
+        self.size = (screen_size[0] - 20, screen_size[1] / 2)
+        self.auto_dismiss = False
+
+
+class DefaultButtonForPopup(Button):
+    def __init__(self, screen_size, **kwargs):
+        super(DefaultButtonForPopup, self).__init__(**kwargs)
+
+        self.size_hint = (None, None)
+        self.size = (screen_size[0] - 45, screen_size[1] / 12)
+

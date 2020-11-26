@@ -6,7 +6,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
-from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel, DefaultLabel
+from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel, DefaultLabel, DefaultPopup, \
+    DefaultButtonForPopup
 from default_layouts import DefaultBoxLayout
 from functions import lines_in_archive, append_in_data
 
@@ -139,17 +140,14 @@ class ScreenRegister(Screen):
         content.add_widget(Label(text=f'Você realmente deseja adicionar:\n'
                                       f'Comprador: {buyer}\n'
                                       f'Produto: {product}\n'
-                                      f'Preço: {price}\n'))
+                                      f'Preço: {price}\n',
+                                 halign='center'))
 
-        btn = Button(text='Voltar', size_hint=(None, None), size=(375, 50), on_release=exit_popup)
-        content.add_widget(btn)
+        content.add_widget(DefaultButtonForPopup(size_screen, text='Voltar', on_release=exit_popup))
 
-        btn2 = Button(text='Confirmar', size_hint=(None, None), size=(375, 50), on_release=confirm_popup)
-        content.add_widget(btn2)
+        content.add_widget(DefaultButtonForPopup(size_screen, text='Confirmar', on_release=confirm_popup))
 
-        popup = Popup(title='Confirmação',
-                      content=content,
-                      size_hint=(None, None), size=(400, 400), auto_dismiss=False)
+        popup = DefaultPopup(size_screen, title='Confirmação', content=content)
 
         popup.open()
         # END - POPUP
@@ -478,18 +476,15 @@ class ScreenPayment(Screen):
                         content.orientation = 'vertical'
                         content.add_widget(Label(text=f'Você realmente deseja quitar a dívida:\n'
                                                       f'Comprador: {name}\n'
-                                                      f'Preço: {payment}\n'))
+                                                      f'Preço: {payment}\n',
+                                                 halign='center'))
 
-                        btn1 = Button(text='Voltar', size_hint=(None, None), size=(375, 50), on_release=exit_popup)
-                        content.add_widget(btn1)
+                        content.add_widget(DefaultButtonForPopup(size_screen, text='Voltar', on_release=exit_popup))
 
-                        btn2 = Button(text='Confirmar', size_hint=(None, None), size=(375, 50),
-                                      on_release=confirm_popup)
-                        content.add_widget(btn2)
+                        content.add_widget(DefaultButtonForPopup(size_screen, text='Confirmar',
+                                                                 on_release=confirm_popup))
 
-                        popup = Popup(title='Confirmação',
-                                      content=content,
-                                      size_hint=(None, None), size=(400, 400), auto_dismiss=False)
+                        popup = DefaultPopup(size_screen, title='Confirmação', content=content)
 
                         popup.open()
                         # END POP UP

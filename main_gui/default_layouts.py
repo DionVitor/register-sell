@@ -14,3 +14,4 @@ class DefaultBoxLayout(BoxLayout):
         self.orientation = 'vertical'
         self.padding = 10
         self.spacing = 10
+

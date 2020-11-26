@@ -295,7 +295,7 @@ class ScreenExtract(Screen):
                     else:
                         list_with_payments.append(f'{line[2]}')
 
-            layout_extract.total_debts.text = f'Total: R${total_debts}'
+            layout_extract.total_debts.text = f'Total: R${total_debts:.2f}'
 
             for items in list_with_payments:
                 widget_for_scroll_extract.add_widget(DefaultLabel(text=f'PAGAMENTO\nPreço: {items.replace("-", "")}',
@@ -408,7 +408,8 @@ class ScreenAllDebts(Screen):
                 line = archive.readline().replace('\n', '').split('/')
                 total += float(line[2])
 
-        layout_all_debts.infos.text = f'O valor total da dívida é: {total}'
+        total_real = float(f'{total:.2f}')
+        layout_all_debts.infos.text = f'O valor total da dívida é: {total_real}'
 
 
 class ScreenPayment(Screen):
@@ -449,16 +450,18 @@ class ScreenPayment(Screen):
             layout_payment.label.text = f'Não existe um cliente {name} registrado!'
 
         else:
-            if total_debt > 0:
+            total_debt_real = float(f'{total_debt:.2f}')
+
+            if total_debt_real > 0:
                 product = '**pagamento**'
                 try:
                     payment = float(layout_payment.input_payment.text.replace(',', '.'))
                 except:
                     layout_payment.label.text = 'Valor de pagamento inválido!'
                 else:
-                    if total_debt - payment < 0:
-                        layout_payment.label.text = f'{name} tem divida de {total_debt} reais.\n' \
-                                                    f'É impossível reduzir {payment} de {total_debt}!'
+                    if total_debt_real - payment < 0:
+                        layout_payment.label.text = f'{name} tem divida de {total_debt_real} reais.\n' \
+                                                    f'É impossível reduzir {payment} de {total_debt_real}!'
 
                     else:
                         # OPEN POP UP

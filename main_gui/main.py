@@ -72,6 +72,17 @@ class ScreenMenu(Screen):
     def change_screen_for_remove_data(self, *args):
         self.manager.current = 'remove_data'
 
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            App.on_pause()
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
+
 
 class ScreenRegister(Screen):
     def __init__(self, **kwargs):
@@ -302,7 +313,7 @@ class ScreenExtract(Screen):
                                                                   size_hint=(1, None), height=size_screen[1] / 10))
                 cont += 1
 
-        widget_for_scroll_extract.height = 75 * cont
+        widget_for_scroll_extract.height = (size_screen[1] / 10) * cont
 
     def back_to_search(self, window, key, *args):
         if key == 27:

@@ -1,0 +1,13 @@
+Dion/tup/10
+Dion/**pagamento**/-10.0
+Dion/12/12
+Dion/**pagamento**/-1.0
+Dion/12/12
+Dion/**pagamento**/-12.0
+Dion/**pagamento**/-11.0
+Dion/fdsf/12
+12/12/12.01
+12/12/12.01
+12/12/12
+Dion/**pagamento**/-9.9
+Dion/**pagamento**/-0.00012

@@ -380,10 +380,10 @@ class ScreenAllDebtors(Screen):
 
         if not list_with_debtors:
             widget_for_scroll_all_debtors.add_widget(DefaultLabel(text='Não existe devedores cadastrados!',
-                                                           size_hint=(1, None), height=size_screen[1] / 13))
+                                                                  size_hint=(1, None), height=size_screen[1] / 13))
             cont = 1
 
-        widget_for_scroll_all_debtors.height = 50 * cont
+        widget_for_scroll_all_debtors.height = (size_screen[1] / 13) * cont
         scroll_layout_all_debtors.add_widget(widget_for_scroll_all_debtors)
 
 

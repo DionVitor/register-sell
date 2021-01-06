@@ -1,2 +1,2 @@
-# Sistema de registro de vendas
-## Sistema com objetivo de cadastro de vendas em uma loja no Novo Gama - GO.
+# Register sell
+## System for the purpose of registering sales in a store in Novo Gama - GO, Brazil.

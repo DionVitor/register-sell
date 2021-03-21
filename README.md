@@ -10,6 +10,11 @@
   </a>
 </p>
 
+## :smiley: Why?
+
+Register sell is an android app that makes a life easier for informal sellers that sell yours products
+and receives the money in parts and always need to have control under all debts and yours respective debtors.
+
 English | [Português](https://github.com/DionVitor/register-sell/blob/master/README-pt_BR.md)
 
 

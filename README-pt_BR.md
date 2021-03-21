@@ -10,13 +10,23 @@
   </a>
 </p>
 
+[English](https://github.com/DionVitor/register-sell/blob/master/README.md) | Português
+
 ## :smiley: Por que?
 
 Register sell é um aplicativo para android que facilita a vida de vendedores informais que vendem produtos
 e recebem o dinheiro em partes e sempre precisam ter controle sob todas as dívidas e seus respectivos devedores.
 
+## :heavy_check_mark: Features
 
-[English](https://github.com/DionVitor/register-sell/blob/master/README.md) | Português
+- [x] Cadastro de dívidas
+- [x] Buscar dívida total de cliente
+- [x] Buscar extrato de compras e pagamentos de cliente
+- [x] Buscar todos os devedores
+- [x] Buscar todas as dívidas
+- [x] Diminuir dívidas ou pagamento integral
+- [x] Excluir dados parciais ou completos
+
 
 
 

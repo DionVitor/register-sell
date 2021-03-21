@@ -17,37 +17,25 @@ English | [Português](https://github.com/DionVitor/register-sell/blob/master/RE
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/menu.png" alt="Menu">
   </kbd>
 
-  &nbsp;&nbsp;&nbsp;&nbsp;
-
   <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/register.png" alt="Register sell">
   </kbd>
-
-  &nbsp;&nbsp;&nbsp;&nbsp;
 
   <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/search_client.png" alt="Search client">
   </kbd>
 
-  &nbsp;&nbsp;&nbsp;&nbsp;
-
   <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/all_depts.png" alt="All debts">
   </kbd>
-
-  &nbsp;&nbsp;&nbsp;&nbsp;
 
   <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/all_debtors.png" alt="All debtors">
   </kbd>
 
-  &nbsp;&nbsp;&nbsp;&nbsp;
-
   <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/payment.png" alt="Payment">
   </kbd>
-
-  &nbsp;&nbsp;&nbsp;&nbsp;
 
   <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/delete_data.png" alt="Delete data">

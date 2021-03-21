@@ -12,6 +12,12 @@
 
 English | [Português](https://github.com/DionVitor/register-sell/blob/master/README-pt_BR.md)
 
+<p align="center">
+  <kbd>
+    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/menu.png" alt="Menu">
+  </kbd>
+</p>
+
 ## :smiley: Why?
 
 Register sell is an android app that makes a life easier for informal sellers that sell yours products
@@ -26,6 +32,8 @@ and receives the money in parts and always need to have control under all debts 
 - [x] Search for all debts
 - [x] Register partial or full payment
 - [x] Delete partial or full data
+
+
 
 
 

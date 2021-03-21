@@ -1,7 +1,6 @@
-# Register sell
-## System for the purpose of registering sales in a store in Novo Gama - GO, Brazil.
+<h1 align="center"> Register sell </h1>
+<p align="center"> System for registering debtors and their debts. </p>>
 
-The system have seven windows.
 
 | Window | Print |
 | - | - |

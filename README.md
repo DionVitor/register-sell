@@ -22,23 +22,7 @@ English | [Português](https://github.com/DionVitor/register-sell/blob/master/RE
   </kbd>
 
   <kbd>
-    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/search_client.png" alt="Search client">
-  </kbd>
-
-  <kbd>
-    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/all_depts.png" alt="All debts">
-  </kbd>
-
-  <kbd>
-    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/all_debtors.png" alt="All debtors">
-  </kbd>
-
-  <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/payment.png" alt="Payment">
-  </kbd>
-
-  <kbd>
-    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/delete_data.png" alt="Delete data">
   </kbd>
 </p>
 

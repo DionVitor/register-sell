@@ -12,6 +12,20 @@
 
 [English](https://github.com/DionVitor/register-sell/blob/master/README.md) | Português
 
+<p align="center">
+  <kbd>
+    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/menu.png" alt="Menu">
+  </kbd>
+
+  <kbd>
+    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/register.png" alt="Register sell">
+  </kbd>
+
+  <kbd>
+    <img width="250" style="border-radius: 5px" height="450" src="imgs_md/payment.png" alt="Payment">
+  </kbd>
+</p>
+
 ## :smiley: Por que?
 
 Register sell é um aplicativo para android que facilita a vida de vendedores informais que vendem produtos

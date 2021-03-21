@@ -55,3 +55,10 @@ and receives the money in parts and always need to have control under all debts 
 
 - [Python](https://www.python.org/)
 - [Kivy](https://kivy.org/)
+
+
+## :smile: Author
+
+Make by Dion Vítor, Contact:
+
+[![Gmail Badge](https://img.shields.io/badge/-dionvictor11@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:dionvictor11@gmail.com)](mailto:dionvictor11@gmail.com)

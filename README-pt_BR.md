@@ -55,3 +55,10 @@ e recebem o dinheiro em partes e sempre precisam ter controle sob todas as dívi
 
 - [Python](https://www.python.org/)
 - [Kivy](https://kivy.org/)
+
+
+## :smile: Autor
+
+Feito por Dion Vítor, entre em contato:
+
+[![Gmail Badge](https://img.shields.io/badge/-dionvictor11@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:dionvictor11@gmail.com)](mailto:dionvictor11@gmail.com)

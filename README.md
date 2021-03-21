@@ -6,11 +6,15 @@ The system have seven windows.
 | Window | Print |
 | - | - |
 | MENU | ![Menu](imgs_md/menu.png) |
+| REGISTER SELL | ![Register the sell](imgs_md/register.png) |
+| SEARCH DEBT | ![Search debt](imgs_md/search_client.png) |
+| ALL DEBTORS | ![All debtors](imgs_md/all_debtors.png) |
+| ALL DEBTS | ![All debts](imgs_md/all_depts.png) |
+| PAYMENT | ![Payment](imgs_md/payment.png) |
+| DELETE DATA | ![Delete Data](imgs_md/delete_data.png) |
 
-![Menu](imgs_md/menu.png)
-![Register the sell](imgs_md/register.png)
-![Search debt](imgs_md/search_client.png)
-![All debtors](imgs_md/all_debtors.png)
-![All debts](imgs_md/all_depts.png)
-![Payment](imgs_md/payment.png)
-![Delete Data](imgs_md/delete_data.png)
+
+
+
+
+

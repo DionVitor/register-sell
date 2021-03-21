@@ -3,6 +3,6 @@
 
 The sistem have seven windows.
 
-![Menu](imgs_md/menu)
+![Menu](imgs_md/menu.png)
 ![Register the sell](imgs_md/register)
 

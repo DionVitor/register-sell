@@ -74,7 +74,7 @@ class ScreenMenu(Screen):
 
     def back_to_menu(self, window, key, *args):
         if key == 27:
-            App.on_pause()
+            App.stop()
             return True
 
     def on_pre_enter(self, *args):

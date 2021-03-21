@@ -42,7 +42,16 @@ e recebem o dinheiro em partes e sempre precisam ter controle sob todas as dívi
 - [x] Excluir dados parciais ou completos
 
 
+## :package: Instruções para rodar o app
 
+#### 1) Rodando em android
+- 1.1) Copie o arquivo App.apk da pasta apps e instale no celular.
+
+#### 2) Rodando em Windows, Linux ou MacOS
+- 2.1) Instale o Kivy: `python -m pip install kivy`
+- 2.2) Clone o repositório: `git clone https://github.com/DionVitor/register-sell`
+- 2.3) Com sua IDE python favorita, rode o projeto.
+    
 
 
 

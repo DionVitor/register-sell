@@ -41,8 +41,16 @@ and receives the money in parts and always need to have control under all debts 
 - [x] Register partial or full payment
 - [x] Delete partial or full data
 
+## :package: Instructions for run the app
 
+#### 1) In android:
+- 1.1) Copy the file App.apk in directory 'apps' and install in your phone.
 
+#### 2) In Windows, Linux or MacOS
+- 2.1) Install Kivy: `python -m pip install kivy`
+- 2.2) Clone the repository: `git clone https://github.com/DionVitor/register-sell`
+- 2.3) With your favorite python IDE, run teh project.
+    
 
 
 

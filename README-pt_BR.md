@@ -41,7 +41,6 @@ e recebem o dinheiro em partes e sempre precisam ter controle sob todas as dívi
 - [x] Diminuir dívidas ou pagamento integral
 - [x] Excluir dados parciais ou completos
 
-
 ## :package: Instruções para rodar o app
 
 #### 1) Rodando em android
@@ -51,8 +50,8 @@ e recebem o dinheiro em partes e sempre precisam ter controle sob todas as dívi
 - 2.1) Instale o Kivy: `python -m pip install kivy`
 - 2.2) Clone o repositório: `git clone https://github.com/DionVitor/register-sell`
 - 2.3) Com sua IDE python favorita, rode o projeto.
-    
 
+## :hammer: Tecnologias Utilizadas
 
-
-
+- [Python](https://www.python.org/)
+- [Kivy](https://kivy.org/)

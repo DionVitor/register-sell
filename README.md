@@ -50,10 +50,8 @@ and receives the money in parts and always need to have control under all debts 
 - 2.1) Install Kivy: `python -m pip install kivy`
 - 2.2) Clone the repository: `git clone https://github.com/DionVitor/register-sell`
 - 2.3) With your favorite python IDE, run the project.
-    
 
+## :hammer: Tech Stack
 
-
-
-
-
+- [Python](https://www.python.org/)
+- [Kivy](https://kivy.org/)

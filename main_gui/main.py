@@ -19,7 +19,7 @@ size_screen_x = 360  # = size_screen[0]
 size_screen_y = 640  # = size_screen[1]
 
 payment = 0
-file = 'banco_de_dados.txt'
+file = 'database.txt'
 
 layout_register = DefaultBoxLayout(size_screen)
 layout_search = DefaultBoxLayout(size_screen)

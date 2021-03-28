@@ -1,6 +1,6 @@
 from main_terminal.functions import lines, append_in_data, body_of_menu, lines_in_archive
 
-archive = 'banco_de_dados.txt'
+archive = 'database.txt'
 class Action:
     def __init__(self, option):
         if option == '1':

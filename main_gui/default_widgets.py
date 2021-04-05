@@ -2,7 +2,7 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivymd.uix.button import MDRoundFlatButton, MDRectangleFlatIconButton
-from kivymd.uix.textfield import MDTextField
+from kivymd.uix.textfield import MDTextFieldRound
 
 default_font = 'default_font.ttf'
 
@@ -15,23 +15,23 @@ class DefaultButtonMenu(MDRectangleFlatIconButton):
         self.size_hint = (.9, .12)
 
 
-class DefaultTextInput(MDTextField):
+class DefaultTextInput(MDTextFieldRound):
     def __init__(self, screen_size: tuple, **kwargs):
         super(DefaultTextInput, self).__init__(**kwargs)
         
         self.font_size = screen_size[1] / 35
-        self.size_hint = (1, None)
-        self.height = screen_size[1] / 15
+        self.size_hint = (.82, .08)
         self.multiline = False
+        self.normal_color = (1, 1, 1, 1)
+        self.color_active = (1, 1, 1, 1)
+        self.line_color = (.0902, .1960, .282353, 1)
 
 
 class DefaultButton(MDRoundFlatButton):
     def __init__(self, screen_size: tuple, **kwargs):
         super(DefaultButton, self).__init__(**kwargs)
 
-        self.size_hint = (1, None)
-        self.height = screen_size[1] / 15
-
+        self.size_hint = (.93, .08)
         self.text_color = (0.2, 0.8, 0.6, 1)
 
 
@@ -43,9 +43,6 @@ class DefaultHeadLabel(Label):
         self.size_hint = (1, None)
         self.height = screen_size[1] / 4.5
         self.color = (1, 1, 1, 1)
-
-        self.text_size = (screen_size[0] - 20, None)
-        self.halign = 'left'
 
         self.font_name = default_font
 

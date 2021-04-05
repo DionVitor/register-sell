@@ -3,7 +3,6 @@ from kivymd.app import MDApp
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
@@ -11,10 +10,8 @@ from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel, D
     DefaultButtonForPopup, DefaultButtonMenu
 from default_layouts import DefaultBoxLayout, DefaultFloatLayout
 from functions import lines_in_archive, append_in_data
-from kivymd.uix.button import MDIconButton
 
-
-Window.size = (360, 640)  # REMOVER
+Window.size = (360, 640)  # REMOVER PARA COMPILAR
 size_screen = Window.size
 
 size_screen_x = 360  # = size_screen[0]
@@ -22,21 +19,6 @@ size_screen_y = 640  # = size_screen[1]
 
 payment = 0
 file = 'database.txt'
-
-layout_register = DefaultBoxLayout(size_screen)
-layout_search = DefaultBoxLayout(size_screen)
-layout_total_debts = DefaultBoxLayout(size_screen)
-layout_extract = DefaultBoxLayout(size_screen)
-layout_all_debtors = DefaultBoxLayout(size_screen)
-layout_all_debts = DefaultBoxLayout(size_screen)
-layout_payment = DefaultBoxLayout(size_screen)
-layout_remove_data = DefaultBoxLayout(size_screen)
-
-scroll_layout_extract = ScrollView()
-widget_for_scroll_extract = BoxLayout(orientation='vertical')
-
-scroll_layout_all_debtors = ScrollView()
-widget_for_scroll_all_debtors = BoxLayout(orientation='vertical')
 
 
 class ScreenMenu(Screen):
@@ -116,27 +98,44 @@ class ScreenMenu(Screen):
         Window.unbind(on_keyboard=self.back_to_menu)
 
 
+layout_register = DefaultFloatLayout(size_screen)
+
+
 class ScreenRegister(Screen):
     def __init__(self, **kwargs):
         super(ScreenRegister, self).__init__(**kwargs)
 
         global layout_register
 
-        layout_register.add_widget(DefaultHeadLabel(size_screen, text='Cadastro'))
+        layout_register.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                    text='Cadastro',
+                                                    pos_hint={'center_x': .25, 'center_y': .9}))
 
-        layout_register.buyer = DefaultTextInput(size_screen, hint_text='Comprador')
+        layout_register.buyer = DefaultTextInput(screen_size=size_screen,
+                                                 hint_text='Comprador',
+                                                 pos_hint={'center_x': .5, 'center_y': .73},
+                                                 icon_left='account')
         layout_register.add_widget(layout_register.buyer)
 
-        layout_register.product = DefaultTextInput(size_screen, hint_text='Produto')
+        layout_register.product = DefaultTextInput(screen_size=size_screen,
+                                                   hint_text='Produto',
+                                                   pos_hint={'center_x': .5, 'center_y': .63},
+                                                   icon_left='basket')
         layout_register.add_widget(layout_register.product)
 
-        layout_register.price = DefaultTextInput(size_screen, hint_text='Preço')
+        layout_register.price = DefaultTextInput(screen_size=size_screen,
+                                                 hint_text='Preço',
+                                                 pos_hint={'center_x': .5, 'center_y': .53},
+                                                 icon_left='cash-100')
         layout_register.add_widget(layout_register.price)
 
-        layout_register.add_widget(DefaultButton(size_screen, text='CONFIRMAR', on_release=self.confirm))
-
-        layout_register.error = DefaultLabel()
+        layout_register.error = DefaultLabel(pos_hint={'center_x': .5, 'center_y': .38})
         layout_register.add_widget(layout_register.error)
+
+        layout_register.add_widget(DefaultButton(screen_size=size_screen,
+                                                 text='CONFIRMAR',
+                                                 on_release=self.confirm,
+                                                 pos_hint={'center_x': .5, 'center_y': .23}))
 
         self.add_widget(layout_register)
 
@@ -197,262 +196,7 @@ class ScreenRegister(Screen):
         # END - POPUP
 
 
-class ScreenSearch(Screen):
-    def __init__(self, **kwargs):
-        super(ScreenSearch, self).__init__(**kwargs)
-
-        global layout_search
-
-        layout_search.add_widget(DefaultHeadLabel(size_screen, text='Pesquisar por cliente'))
-
-        layout_search.add_widget(DefaultButton(screen_size=(size_screen_x, size_screen_y * 2), text='Total de dívidas',
-                                               on_release=self.change_screen_for_total_debts))
-        layout_search.add_widget(DefaultButton(screen_size=(size_screen_x, size_screen_y * 2), text='Extrato de vendas',
-                                               on_release=self.change_screen_for_extract))
-
-        layout_search.add_widget(DefaultLabel())
-        self.add_widget(layout_search)
-
-    def back_to_menu(self, window, key, *args):
-        if key == 27:
-            self.manager.current = 'menu'
-            return True
-
-    def on_pre_enter(self, *args):
-        Window.bind(on_keyboard=self.back_to_menu)
-
-    def on_pre_leave(self, *args):
-        Window.unbind(on_keyboard=self.back_to_menu)
-
-    def change_screen_for_total_debts(self, *args):
-        self.manager.current = 'total_debts'
-
-    def change_screen_for_extract(self, *args):
-        self.manager.current = 'extract'
-
-
-class ScreenTotalDebts(Screen):
-    def __init__(self, **kwargs):
-        super(ScreenTotalDebts, self).__init__(**kwargs)
-
-        global layout_total_debts
-
-        layout_total_debts.add_widget(DefaultHeadLabel(size_screen, text='Total de dívidas'))
-
-        layout_total_debts.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
-        layout_total_debts.add_widget(layout_total_debts.search)
-
-        layout_total_debts.add_widget(DefaultButton(size_screen, text='Procurar', on_release=self.search))
-
-        layout_total_debts.infos = DefaultLabel(halign='center')
-        layout_total_debts.add_widget(layout_total_debts.infos)
-
-        self.add_widget(layout_total_debts)
-
-    def back_to_search(self, window, key, *args):
-        if key == 27:
-            layout_total_debts.search.text = ''
-            layout_total_debts.infos.text = ''
-            self.manager.current = 'search'
-            return True
-
-    def on_pre_enter(self, *args):
-        Window.bind(on_keyboard=self.back_to_search)
-
-    def on_pre_leave(self, *args):
-        Window.unbind(on_keyboard=self.back_to_search)
-
-    def search(self, *args):
-        search = layout_total_debts.search.text.title()
-        total_debt = 0
-        total_purchase = 0
-        exist_client = False
-
-        with open(file) as archive:
-            for c in range(0, lines_in_archive(file)):
-                line = archive.readline().replace('\n', '').split('/')
-
-                if line[0] == search:
-                    total_debt += float(line[2])
-                    if line[1] != '**pagamento**':
-                        total_purchase += 1
-                        exist_client = True
-        if exist_client:
-            if total_purchase != 1:
-                s = 'compras'
-            else:
-                s = 'compra'
-            layout_total_debts.infos.text = f'{total_purchase} {s} do cliente encontada!\n' \
-                                            f' Dívida total de {total_debt} reias'
-        else:
-            layout_total_debts.infos.text = 'Cliente não encontrado!'
-
-
-class ScreenExtract(Screen):
-    def __init__(self, **kwargs):
-        super(ScreenExtract, self).__init__(**kwargs)
-
-        global layout_extract
-        global scroll_layout_extract
-        global widget_for_scroll_extract
-
-        layout_extract.add_widget(DefaultHeadLabel(size_screen, text='Extrato'))
-
-        layout_extract.search = DefaultTextInput(size_screen, hint_text='Nome do cliente')
-        layout_extract.add_widget(layout_extract.search)
-
-        layout_extract.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_extract))
-
-        layout_extract.label_of_client = DefaultLabel(text='Cliente: ', size_hint=(1, None), height=size_screen[1] / 13)
-        layout_extract.add_widget(layout_extract.label_of_client)
-
-        widget_for_scroll_extract.size_hint_y = None
-        scroll_layout_extract.add_widget(widget_for_scroll_extract)
-
-        layout_extract.add_widget(scroll_layout_extract)
-
-        layout_extract.total_debts = DefaultLabel(text='Total: R$', size_hint=(1, None), height=size_screen[1] / 13)
-        layout_extract.add_widget(layout_extract.total_debts)
-
-        self.add_widget(layout_extract)
-
-    def search_extract(self, *args):
-        layout_extract.label_of_client.text = f'Cliente: {layout_extract.search.text.title()}'
-
-        global widget_for_scroll_extract
-        widget_for_scroll_extract.clear_widgets()
-
-        with open(file) as archive:
-            cont = 0
-            total_debts = 0
-            list_with_payments = []
-            for c in range(0, lines_in_archive(file)):
-                line = archive.readline().replace('\n', '').split('/')
-                if line[0] == layout_extract.search.text.title():
-                    total_debts += float(line[2])
-                    if line[1] != '**pagamento**':
-                        widget_for_scroll_extract.add_widget(DefaultLabel(text=f'Compra: {line[1]}\nPreço: {line[2]}',
-                                                                          size_hint=(1, None),
-                                                                          height=size_screen[1] / 10))
-                        cont += 1
-                    else:
-                        list_with_payments.append(f'{line[2]}')
-
-            layout_extract.total_debts.text = f'Total: R${total_debts:.2f}'
-
-            for items in list_with_payments:
-                widget_for_scroll_extract.add_widget(DefaultLabel(text=f'PAGAMENTO\nPreço: {items.replace("-", "")}',
-                                                                  size_hint=(1, None), height=size_screen[1] / 10))
-                cont += 1
-
-        widget_for_scroll_extract.height = (size_screen[1] / 10) * cont
-
-    def back_to_search(self, window, key, *args):
-        if key == 27:
-            layout_extract.search.text = ''
-            widget_for_scroll_extract.clear_widgets()
-            layout_extract.label_of_client.text = 'Cliente: '
-            layout_extract.total_debts.text = 'Total: R$'
-            self.manager.current = 'search'
-            return True
-
-    def on_pre_enter(self, *args):
-        Window.bind(on_keyboard=self.back_to_search)
-
-    def on_pre_leave(self, *args):
-        Window.unbind(on_keyboard=self.back_to_search)
-
-
-class ScreenAllDebtors(Screen):
-    def __init__(self, **kwargs):
-        super(ScreenAllDebtors, self).__init__(**kwargs)
-
-        global scroll_layout_all_debtors
-        global widget_for_scroll_all_debtors
-        global layout_all_debtors
-
-        widget_for_scroll_all_debtors.clear_widgets()
-        widget_for_scroll_all_debtors.size_hint_y = None
-
-        layout_all_debtors.add_widget(DefaultHeadLabel(size_screen, text='Todos os devedores'))
-        layout_all_debtors.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debtors))
-
-        layout_all_debtors.add_widget(scroll_layout_all_debtors)
-
-        self.add_widget(layout_all_debtors)
-
-    def back_to_menu(self, window, key, *args):
-        if key == 27:
-            widget_for_scroll_all_debtors.clear_widgets()
-            self.manager.current = 'menu'
-            return True
-
-    def on_pre_enter(self, *args):
-        Window.bind(on_keyboard=self.back_to_menu)
-
-    def on_pre_leave(self, *args):
-        Window.unbind(on_keyboard=self.back_to_menu)
-
-    def search_all_debtors(self, *args):
-        scroll_layout_all_debtors.clear_widgets()
-        widget_for_scroll_all_debtors.clear_widgets()
-        list_with_debtors = []
-        cont = 0
-
-        with open(file) as archive:
-            for c in range(0, lines_in_archive(file)):
-                line = archive.readline().replace('\n', '').split('/')
-
-                if line[0] not in list_with_debtors:
-                    widget_for_scroll_all_debtors.add_widget(DefaultLabel(text=f'{cont + 1} - {line[0]}',
-                                                                          size_hint=(1, None),
-                                                                          height=size_screen[1] / 13))
-                    cont += 1
-                    list_with_debtors.append(line[0])
-
-        if not list_with_debtors:
-            widget_for_scroll_all_debtors.add_widget(DefaultLabel(text='Não existe devedores cadastrados!',
-                                                                  size_hint=(1, None), height=size_screen[1] / 13))
-            cont = 1
-
-        widget_for_scroll_all_debtors.height = (size_screen[1] / 13) * cont
-        scroll_layout_all_debtors.add_widget(widget_for_scroll_all_debtors)
-
-
-class ScreenAllDebts(Screen):
-    def __init__(self, **kwargs):
-        super(ScreenAllDebts, self).__init__(**kwargs)
-        global layout_all_debts
-
-        layout_all_debts.add_widget(DefaultHeadLabel(size_screen, text='Total de dívidas'))
-        layout_all_debts.add_widget(DefaultButton(size_screen, text='Pesquisar', on_release=self.search_all_debts))
-
-        layout_all_debts.infos = DefaultLabel(text='O valor total de dívida é:')
-        layout_all_debts.add_widget(layout_all_debts.infos)
-
-        self.add_widget(layout_all_debts)
-
-    def back_to_menu(self, window, key, *args):
-        if key == 27:
-            layout_all_debts.infos.text = 'O valor total da dívida é:'
-            self.manager.current = 'menu'
-            return True
-
-    def on_pre_enter(self, *args):
-        Window.bind(on_keyboard=self.back_to_menu)
-
-    def on_pre_leave(self, *args):
-        Window.unbind(on_keyboard=self.back_to_menu)
-
-    def search_all_debts(self, *args):
-        total = 0
-        with open(file) as archive:
-            for c in range(0, lines_in_archive(file)):
-                line = archive.readline().replace('\n', '').split('/')
-                total += float(line[2])
-
-        total_real = float(f'{total:.2f}')
-        layout_all_debts.infos.text = f'O valor total da dívida é: {total_real}'
+layout_payment = DefaultFloatLayout(size_screen)
 
 
 class ScreenPayment(Screen):
@@ -461,18 +205,29 @@ class ScreenPayment(Screen):
 
         global layout_payment
 
-        layout_payment.add_widget(DefaultHeadLabel(size_screen, text='Realizar pagamento'))
+        layout_payment.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                   text='Pagamento',
+                                                   pos_hint={'center_x': .27, 'center_y': .9}))
 
-        layout_payment.input_name = DefaultTextInput(size_screen, hint_text='Nome do pagante')
+        layout_payment.input_name = DefaultTextInput(screen_size=size_screen,
+                                                     hint_text='Pagador',
+                                                     pos_hint={'center_x': .5, 'center_y': .73},
+                                                     icon_left='account')
         layout_payment.add_widget(layout_payment.input_name)
 
-        layout_payment.input_payment = DefaultTextInput(size_screen, hint_text='Valor do pagamento')
+        layout_payment.input_payment = DefaultTextInput(screen_size=size_screen,
+                                                        hint_text='Valor do pagamento',
+                                                        pos_hint={'center_x': .5, 'center_y': .63},
+                                                        icon_left='cash-minus')
         layout_payment.add_widget(layout_payment.input_payment)
 
-        layout_payment.add_widget(DefaultButton(size_screen, text='Confirmar', on_release=self.confirmation))
-
-        layout_payment.label = DefaultLabel()
+        layout_payment.label = DefaultLabel(pos_hint={'center_x': .5, 'center_y': .48})
         layout_payment.add_widget(layout_payment.label)
+
+        layout_payment.add_widget(DefaultButton(screen_size=size_screen,
+                                                text='Confirmar',
+                                                on_release=self.confirmation,
+                                                pos_hint={'center_x': .5, 'center_y': .33}))
 
         self.add_widget(layout_payment)
 
@@ -490,7 +245,8 @@ class ScreenPayment(Screen):
                     exist_client = True
 
         if not exist_client:
-            layout_payment.label.text = f'Não existe um cliente {name} registrado!'
+            layout_payment.label.text = f'Não existe um cliente {name} registrado!' if name \
+                else f'Não foi escrito o nome do pagador!'
 
         else:
             total_debt_real = float(f'{total_debt:.2f}')
@@ -551,25 +307,360 @@ class ScreenPayment(Screen):
         Window.unbind(on_keyboard=self.back_to_menu)
 
 
+layout_search = DefaultFloatLayout(size_screen)
+
+
+class ScreenSearch(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenSearch, self).__init__(**kwargs)
+
+        global layout_search
+
+        layout_search.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                  text='Pesquisar por cliente',
+                                                  pos_hint={'center_x': .45, 'center_y': .9}))
+
+        layout_search.add_widget(DefaultButtonMenu(text='Total de dívidas',
+                                                   on_release=self.change_screen_for_total_debts,
+                                                   pos_hint={'center_x': .5, 'center_y': .63},
+                                                   icon='cash-multiple'))
+
+        layout_search.add_widget(DefaultButtonMenu(text='Extrato de vendas',
+                                                   on_release=self.change_screen_for_extract,
+                                                   pos_hint={'center_x': .5, 'center_y': .49},
+                                                   icon='text-box'))
+
+        self.add_widget(layout_search)
+
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
+
+    def change_screen_for_total_debts(self, *args):
+        self.manager.current = 'total_debts'
+
+    def change_screen_for_extract(self, *args):
+        self.manager.current = 'extract'
+
+
+layout_total_debts = DefaultFloatLayout(size_screen)
+
+
+class ScreenTotalDebts(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenTotalDebts, self).__init__(**kwargs)
+
+        global layout_total_debts
+
+        layout_total_debts.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                       text='Total de dívidas',
+                                                       pos_hint={'center_x': .36, 'center_y': .9}))
+
+        layout_total_debts.search = DefaultTextInput(screen_size=size_screen,
+                                                     hint_text='Nome do cliente',
+                                                     pos_hint={'center_x': .5, 'center_y': .73},
+                                                     icon_left='account')
+        layout_total_debts.add_widget(layout_total_debts.search)
+
+        layout_total_debts.infos = DefaultLabel(pos_hint={'center_x': .5, 'center_y': .58})
+        layout_total_debts.add_widget(layout_total_debts.infos)
+
+        layout_total_debts.add_widget(DefaultButton(screen_size=size_screen,
+                                                    text='Procurar',
+                                                    on_release=self.search,
+                                                    pos_hint={'center_x': .5, 'center_y': .43}))
+
+        self.add_widget(layout_total_debts)
+
+    def back_to_search(self, window, key, *args):
+        if key == 27:
+            layout_total_debts.search.text = ''
+            layout_total_debts.infos.text = ''
+            self.manager.current = 'search'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_search)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_search)
+
+    @staticmethod
+    def search(*args):
+        search = layout_total_debts.search.text.title()
+        total_debt = 0
+        total_purchase = 0
+        exist_client = False
+
+        with open(file) as archive:
+            for c in range(0, lines_in_archive(file)):
+                line = archive.readline().replace('\n', '').split('/')
+
+                if line[0] == search:
+                    total_debt += float(line[2])
+                    if line[1] != '**pagamento**':
+                        total_purchase += 1
+                        exist_client = True
+        if exist_client:
+            if total_purchase != 1:
+                s = 'compras'
+            else:
+                s = 'compra'
+            layout_total_debts.infos.text = f'{total_purchase} {s} do cliente encontada!\n' \
+                                            f' Dívida total de {total_debt} reias'
+        else:
+            layout_total_debts.infos.text = 'Cliente não encontrado!'
+
+
+widget_for_scroll_extract = BoxLayout(orientation='vertical', size_hint_y=None)
+layout_extract = DefaultFloatLayout(size_screen)
+
+
+class ScreenExtract(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenExtract, self).__init__(**kwargs)
+
+        global layout_extract
+        global widget_for_scroll_extract
+
+        layout_extract.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                   text='Extrato',
+                                                   pos_hint={'center_x': .2, 'center_y': .9}))
+
+        layout_extract.search = DefaultTextInput(screen_size=size_screen,
+                                                 hint_text='Nome do cliente',
+                                                 pos_hint={'center_x': .5, 'center_y': .73},
+                                                 icon_left='account')
+        layout_extract.add_widget(layout_extract.search)
+
+        layout_extract.add_widget(DefaultButton(screen_size=size_screen,
+                                                text='Pesquisar',
+                                                on_release=self.search_extract,
+                                                pos_hint={'center_x': .5, 'center_y': .63}))
+
+        layout_extract.label_of_client = DefaultLabel(text='Cliente: ',
+                                                      size_hint=(1, None),
+                                                      height=size_screen[1] / 13,
+                                                      pos_hint={'center_x': .5, 'center_y': .54})
+        layout_extract.add_widget(layout_extract.label_of_client)
+
+        scroll_layout_extract = ScrollView(pos_hint={'center_x': .5, 'center_y': .3},
+                                           size_hint=(.9, .4))
+        scroll_layout_extract.add_widget(widget_for_scroll_extract)
+
+        layout_extract.add_widget(scroll_layout_extract)
+
+        layout_extract.total_debts = DefaultLabel(text='Total: R$',
+                                                  size_hint=(1, None),
+                                                  height=size_screen[1] / 13,
+                                                  pos_hint={'center_x': .5, 'center_y': .05})
+        layout_extract.add_widget(layout_extract.total_debts)
+
+        self.add_widget(layout_extract)
+
+    @staticmethod
+    def search_extract(*args):
+        layout_extract.label_of_client.text = f'Cliente: {layout_extract.search.text.title()}'
+
+        global widget_for_scroll_extract
+        widget_for_scroll_extract.clear_widgets()
+
+        with open(file) as archive:
+            cont = 0
+            total_debts = 0
+            list_with_payments = []
+            for c in range(0, lines_in_archive(file)):
+                line = archive.readline().replace('\n', '').split('/')
+                if line[0] == layout_extract.search.text.title():
+                    total_debts += float(line[2])
+                    if line[1] != '**pagamento**':
+                        widget_for_scroll_extract.add_widget(DefaultLabel(text=f'Compra: {line[1]}\nPreço: {line[2]}',
+                                                                          size_hint=(1, None),
+                                                                          height=size_screen[1] / 10))
+                        cont += 1
+                    else:
+                        list_with_payments.append(f'{line[2]}')
+
+            layout_extract.total_debts.text = f'Total: R${total_debts:.2f}'
+
+            for items in list_with_payments:
+                widget_for_scroll_extract.add_widget(DefaultLabel(text=f'PAGAMENTO\nPreço: {items.replace("-", "")}',
+                                                                  size_hint=(1, None), height=size_screen[1] / 10))
+                cont += 1
+
+        widget_for_scroll_extract.height = (size_screen[1] / 10) * cont
+
+    def back_to_search(self, window, key, *args):
+        if key == 27:
+            layout_extract.search.text = ''
+            widget_for_scroll_extract.clear_widgets()
+            layout_extract.label_of_client.text = 'Cliente: '
+            layout_extract.total_debts.text = 'Total: R$'
+            self.manager.current = 'search'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_search)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_search)
+
+
+scroll_layout_all_debtors = ScrollView(pos_hint={'center_x': .5, 'center_y': .35},
+                                       size_hint=(.9, .6))
+widget_for_scroll_all_debtors = BoxLayout(orientation='vertical')
+layout_all_debtors = DefaultFloatLayout(size_screen)
+
+
+class ScreenAllDebtors(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenAllDebtors, self).__init__(**kwargs)
+
+        global scroll_layout_all_debtors
+        global widget_for_scroll_all_debtors
+        global layout_all_debtors
+
+        widget_for_scroll_all_debtors.clear_widgets()
+        widget_for_scroll_all_debtors.size_hint_y = None
+
+        layout_all_debtors.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                       text='Todos os devedores',
+                                                       pos_hint={'center_x': .42, 'center_y': .9}))
+
+        layout_all_debtors.add_widget(DefaultButton(screen_size=size_screen,
+                                                    text='Pesquisar',
+                                                    on_release=self.search_all_debtors,
+                                                    pos_hint={'center_x': .5, 'center_y': .73}))
+
+        layout_all_debtors.add_widget(scroll_layout_all_debtors)
+
+        self.add_widget(layout_all_debtors)
+
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            widget_for_scroll_all_debtors.clear_widgets()
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
+
+    @staticmethod
+    def search_all_debtors(*args):
+        scroll_layout_all_debtors.clear_widgets()
+        widget_for_scroll_all_debtors.clear_widgets()
+        list_with_debtors = []
+        cont = 0
+
+        with open(file) as archive:
+            for c in range(0, lines_in_archive(file)):
+                line = archive.readline().replace('\n', '').split('/')
+
+                if line[0] not in list_with_debtors:
+                    widget_for_scroll_all_debtors.add_widget(DefaultLabel(text=f'{cont + 1} - {line[0]}',
+                                                                          size_hint=(1, None),
+                                                                          height=size_screen[1] / 13))
+                    cont += 1
+                    list_with_debtors.append(line[0])
+
+        if not list_with_debtors:
+            widget_for_scroll_all_debtors.add_widget(DefaultLabel(text='Não existe devedores cadastrados!',
+                                                                  size_hint=(1, None), height=size_screen[1] / 13))
+            cont = 1
+
+        widget_for_scroll_all_debtors.height = (size_screen[1] / 13) * cont
+        scroll_layout_all_debtors.add_widget(widget_for_scroll_all_debtors)
+
+
+layout_all_debts = DefaultFloatLayout(size_screen)
+
+
+class ScreenAllDebts(Screen):
+    def __init__(self, **kwargs):
+        super(ScreenAllDebts, self).__init__(**kwargs)
+
+        global layout_all_debts
+
+        layout_all_debts.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                     text='Total de dívidas',
+                                                     pos_hint={'center_x': .35, 'center_y': .9}))
+
+        layout_all_debts.add_widget(DefaultButton(screen_size=size_screen,
+                                                  text='Pesquisar',
+                                                  on_release=self.search_all_debts,
+                                                  pos_hint={'center_x': .5, 'center_y': .73}))
+
+        layout_all_debts.infos = DefaultLabel(text='O valor total de dívida é:',
+                                              pos_hint={'center_x': .5, 'center_y': .6})
+        layout_all_debts.add_widget(layout_all_debts.infos)
+
+        self.add_widget(layout_all_debts)
+
+    def back_to_menu(self, window, key, *args):
+        if key == 27:
+            layout_all_debts.infos.text = 'O valor total da dívida é:'
+            self.manager.current = 'menu'
+            return True
+
+    def on_pre_enter(self, *args):
+        Window.bind(on_keyboard=self.back_to_menu)
+
+    def on_pre_leave(self, *args):
+        Window.unbind(on_keyboard=self.back_to_menu)
+
+    @staticmethod
+    def search_all_debts(*args):
+        total = 0
+        with open(file) as archive:
+            for c in range(0, lines_in_archive(file)):
+                line = archive.readline().replace('\n', '').split('/')
+                total += float(line[2])
+
+        total_real = float(f'{total:.2f}')
+        layout_all_debts.infos.text = f'O valor total da dívida é: {total_real}'
+
+
+layout_remove_data = DefaultFloatLayout(size_screen)
+
+
 class ScreenRemoveData(Screen):
     def __init__(self, **kwargs):
         super(ScreenRemoveData, self).__init__(**kwargs)
 
         global layout_remove_data
 
-        layout_remove_data.add_widget(DefaultHeadLabel(size_screen, text='Excluir dados'))
+        layout_remove_data.add_widget(DefaultHeadLabel(screen_size=size_screen,
+                                                       text='Excluir dados',
+                                                       pos_hint={'center_x': .3, 'center_y': .9}))
 
-        layout_remove_data.name = DefaultTextInput(size_screen, hint_text='Apagar dados de')
+        layout_remove_data.name = DefaultTextInput(screen_size=size_screen,
+                                                   hint_text='Apagar dados de',
+                                                   pos_hint={'center_x': .5, 'center_y': .73},
+                                                   icon_left='account-remove')
         layout_remove_data.add_widget(layout_remove_data.name)
 
-        layout_remove_data.add_widget(DefaultButton(size_screen, text='Excluir dados do usuário',
-                                                    on_release=self.delete_data_confirmation))
+        layout_remove_data.add_widget(DefaultButton(screen_size=size_screen,
+                                                    text='Excluir dados do usuário',
+                                                    on_release=self.delete_data_confirmation,
+                                                    pos_hint={'center_x': .5, 'center_y': .63}))
 
         layout_remove_data.label = DefaultLabel()
         layout_remove_data.add_widget(layout_remove_data.label)
 
-        layout_remove_data.add_widget(DefaultButton(size_screen, text='Apagar todos os dados',
-                                                    on_release=self.delete_all_data_confirmation))
+        layout_remove_data.add_widget(DefaultButton(screen_size=size_screen,
+                                                    text='Apagar todos os dados',
+                                                    on_release=self.delete_all_data_confirmation,
+                                                    pos_hint={'center_x': .5, 'center_y': .07}))
 
         self.add_widget(layout_remove_data)
 
@@ -624,15 +715,20 @@ class ScreenRemoveData(Screen):
         content.add_widget(Label(text=f'Você realmente deseja excluir os dados:\n'
                                       f'Devedor: {layout_remove_data.name.text.title().strip()}'))
 
-        btn = Button(text='Voltar', size_hint=(None, None), size=(375, 50), on_release=exit_popup)
+        btn = DefaultButtonForPopup(screen_size=size_screen,
+                                    text='Voltar',
+                                    on_release=exit_popup)
         content.add_widget(btn)
 
-        btn2 = Button(text='Confirmar', size_hint=(None, None), size=(375, 50), on_release=confirm_popup)
+        btn2 = DefaultButtonForPopup(screen_size=size_screen,
+                                     text='Confirmar',
+                                     on_release=confirm_popup)
         content.add_widget(btn2)
 
-        popup = Popup(title='Confirmação',
-                      content=content,
-                      size_hint=(None, None), size=(400, 400), auto_dismiss=False)
+        popup = DefaultPopup(screen_size=size_screen,
+                             title='Confirmação',
+                             content=content,
+                             auto_dismiss=False)
 
         popup.open()
         # END - POPUP
@@ -653,17 +749,22 @@ class ScreenRemoveData(Screen):
 
         content = BoxLayout()
         content.orientation = 'vertical'
-        content.add_widget(Label(text=f'Você realmente deseja excluir TODOS os dados?\n'))
+        content.add_widget(Label(text=f'Você deseja excluir TODOS os dados?\n'))
 
-        btn = Button(text='Voltar', size_hint=(None, None), size=(375, 50), on_release=exit_popup)
+        btn = DefaultButtonForPopup(screen_size=size_screen,
+                                    text='Voltar',
+                                    on_release=exit_popup)
         content.add_widget(btn)
 
-        btn2 = Button(text='Confirmar', size_hint=(None, None), size=(375, 50), on_release=confirm_popup)
+        btn2 = DefaultButtonForPopup(screen_size=size_screen,
+                                     text='Confirmar',
+                                     on_release=confirm_popup)
         content.add_widget(btn2)
 
-        popup = Popup(title='Confirmação',
-                      content=content,
-                      size_hint=(None, None), size=(400, 400), auto_dismiss=False)
+        popup = DefaultPopup(screen_size=size_screen,
+                             title='Confirmação',
+                             content=content,
+                             auto_dismiss=False)
 
         popup.open()
 

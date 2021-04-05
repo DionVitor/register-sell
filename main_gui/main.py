@@ -1,15 +1,17 @@
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel, DefaultLabel, DefaultPopup, \
-    DefaultButtonForPopup
-from default_layouts import DefaultBoxLayout
+    DefaultButtonForPopup, DefaultButtonMenu
+from default_layouts import DefaultBoxLayout, DefaultFloatLayout
 from functions import lines_in_archive, append_in_data
+from kivymd.uix.button import MDIconButton
 
 
 Window.size = (360, 640)  # REMOVER
@@ -41,16 +43,46 @@ class ScreenMenu(Screen):
     def __init__(self, **kwargs):
         super(ScreenMenu, self).__init__(**kwargs)
 
-        layout_menu = DefaultBoxLayout(size_screen)
-        layout_menu.spacing = 2.5
+        layout_menu = DefaultFloatLayout(screen_size=size_screen)
 
-        layout_menu.add_widget(DefaultLabel(text='MENU', font_size=size_screen[1] / 15))
-        layout_menu.add_widget(Button(text='Cadastrar dívida', on_release=self.change_screen_for_register))
-        layout_menu.add_widget(Button(text='Buscar dívida', on_release=self.change_screen_for_search))
-        layout_menu.add_widget(Button(text='Todos os devedores', on_release=self.change_screen_for_all_debtors))
-        layout_menu.add_widget(Button(text='Total de dívidas', on_release=self.change_screen_for_all_debts))
-        layout_menu.add_widget(Button(text='Diminuir uma dívida', on_release=self.change_screen_for_payment))
-        layout_menu.add_widget(Button(text='Excluir dados', on_release=self.change_screen_for_remove_data))
+        layout_menu.add_widget(DefaultLabel(text='Register Sell',
+                                            pos_hint={'center_x': .25, 'center_y': .93},
+                                            font_size=size_screen[1] / 25))
+
+        # IMPLEMENTAR: Botão de configuração:
+        # MDIconButton(pos_hint={'center_x': .5, 'center_y': .5},
+        #              icon='icons/config.png',
+        #              user_font_size=str(size_screen[1] / 40) + 'sp'))
+
+        layout_menu.add_widget(DefaultButtonMenu(text='Cadastrar dívida',
+                                                 on_release=self.change_screen_for_register,
+                                                 pos_hint={'center_x': .5, 'center_y': .8},
+                                                 icon='account-plus'))
+
+        layout_menu.add_widget(DefaultButtonMenu(text='Cadastrar pagamento',
+                                                 on_release=self.change_screen_for_payment,
+                                                 pos_hint={'center_x': .5, 'center_y': .66},
+                                                 icon='account-cash'))
+
+        layout_menu.add_widget(DefaultButtonMenu(text='Buscar dívida',
+                                                 on_release=self.change_screen_for_search,
+                                                 pos_hint={'center_x': .5, 'center_y': .52},
+                                                 icon='magnify'))
+
+        layout_menu.add_widget(DefaultButtonMenu(text='Todos os devedores',
+                                                 on_release=self.change_screen_for_all_debtors,
+                                                 pos_hint={'center_x': .5, 'center_y': .38},
+                                                 icon='account-search'))
+
+        layout_menu.add_widget(DefaultButtonMenu(text='Total de dívidas',
+                                                 on_release=self.change_screen_for_all_debts,
+                                                 pos_hint={'center_x': .5, 'center_y': .24},
+                                                 icon='cash-register'))
+
+        layout_menu.add_widget(DefaultButtonMenu(text='Excluir dados',
+                                                 on_release=self.change_screen_for_remove_data,
+                                                 pos_hint={'center_x': .5, 'center_y': .10},
+                                                 icon='database-remove'))
 
         self.add_widget(layout_menu)
 
@@ -74,7 +106,7 @@ class ScreenMenu(Screen):
 
     def back_to_menu(self, window, key, *args):
         if key == 27:
-            App.stop()
+            MDApp.stop(self)
             return True
 
     def on_pre_enter(self, *args):
@@ -651,7 +683,7 @@ class MyScreenManager(ScreenManager):
         self.add_widget(ScreenRemoveData(name='remove_data'))
 
 
-class System(App):
+class System(MDApp):
     def build(self):
         return MyScreenManager()
 

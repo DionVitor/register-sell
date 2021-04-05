@@ -1,14 +1,13 @@
 from typing import NewType, NoReturn
-DataBase = NewType('database', str)
 
 
-def append_in_data(file: DataBase, cont: str) -> NoReturn:
+def append_in_data(file: str, cont: str) -> NoReturn:
     with open(file, 'a') as archive:
         archive.write(f'{cont}\n')
         archive.close()
 
 
-def lines_in_archive(file: DataBase) -> int:
+def lines_in_archive(file: str) -> int:
     archive = open(file)
     total = 0
     for line in archive:

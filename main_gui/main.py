@@ -1,14 +1,12 @@
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivymd.app import MDApp
 from kivy.uix.label import Label
-from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.popup import Popup
 from kivy.uix.scrollview import ScrollView
 from kivy.core.window import Window
 from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel, DefaultLabel, DefaultPopup, \
     DefaultButtonForPopup, DefaultButtonMenu
-from default_layouts import DefaultBoxLayout, DefaultFloatLayout
+from default_layouts import DefaultFloatLayout
 from functions import lines_in_archive, append_in_data
 
 Window.size = (360, 640)  # REMOVER PARA COMPILAR

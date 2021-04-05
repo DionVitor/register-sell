@@ -5,7 +5,7 @@ test.py
 .idea/Sistema-de-registro-de-vendas.iml
 *.iml
 .idea/Sistema-de-registro-de-vendas.iml
-main_gui/__pycache__/default_widgets.cpython-39.pyc
-main_gui/__pycache__/functions.cpython-39.pyc
-main_gui/__pycache__/default_layouts.cpython-39.pyc
+App/__pycache__/default_widgets.cpython-39.pyc
+App/__pycache__/functions.cpython-39.pyc
+App/__pycache__/default_layouts.cpython-39.pyc
 .idea/Sistema-de-registro-de-vendas.iml

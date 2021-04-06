@@ -4,7 +4,7 @@ from kivy.uix.popup import Popup
 from kivymd.uix.button import MDRoundFlatButton, MDRectangleFlatIconButton
 from kivymd.uix.textfield import MDTextFieldRound
 
-default_font = 'default_font.ttf'
+DEFAULT_FONT = 'default_font.ttf'
 
 
 class DefaultButtonMenu(MDRectangleFlatIconButton):
@@ -44,7 +44,7 @@ class DefaultHeadLabel(Label):
         self.height = screen_size[1] / 4.5
         self.color = (1, 1, 1, 1)
 
-        self.font_name = default_font
+        self.font_name = DEFAULT_FONT
 
 
 class DefaultLabel(Label):

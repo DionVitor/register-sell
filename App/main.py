@@ -8,8 +8,9 @@ from default_widgets import DefaultTextInput, DefaultButton, DefaultHeadLabel, D
     DefaultButtonForPopup, DefaultButtonMenu
 from default_layouts import DefaultFloatLayout
 from functions import lines_in_archive, append_in_data
+from kivymd.uix.label import MDIcon
 
-Window.size = (360, 640)  # REMOVER PARA COMPILAR
+Window.size = (360, 640)  # REMOVER ESSA LINHA PARA COMPILAR
 size_screen = Window.size
 
 size_screen_x = 360  # = size_screen[0]
@@ -25,8 +26,15 @@ class ScreenMenu(Screen):
 
         layout_menu = DefaultFloatLayout(screen_size=size_screen)
 
+        layout_menu.add_widget(MDIcon(icon='icons/hexagon-outline.png',
+                                      pos_hint={'center_x': .1, 'center_y': .93},
+                                      size_hint=(.1, .055)))
+
+        layout_menu.add_widget(DefaultLabel(text='RS',
+                                            pos_hint={'center_x': .1, 'center_y': .93}))
+
         layout_menu.add_widget(DefaultLabel(text='Register Sell',
-                                            pos_hint={'center_x': .25, 'center_y': .93},
+                                            pos_hint={'center_x': .35, 'center_y': .93},
                                             font_size=size_screen[1] / 25))
 
         # IMPLEMENTAR: Botão de configuração:
@@ -367,7 +375,8 @@ class ScreenTotalDebts(Screen):
                                                      icon_left='account')
         layout_total_debts.add_widget(layout_total_debts.search)
 
-        layout_total_debts.infos = DefaultLabel(pos_hint={'center_x': .5, 'center_y': .58})
+        layout_total_debts.infos = DefaultLabel(pos_hint={'center_x': .5, 'center_y': .58},
+                                                halign='center')
         layout_total_debts.add_widget(layout_total_debts.infos)
 
         layout_total_debts.add_widget(DefaultButton(screen_size=size_screen,
@@ -412,7 +421,7 @@ class ScreenTotalDebts(Screen):
             else:
                 s = 'compra'
             layout_total_debts.infos.text = f'{total_purchase} {s} do cliente encontada!\n' \
-                                            f' Dívida total de {total_debt} reias'
+                                            f'Total: R${total_debt}'
         else:
             layout_total_debts.infos.text = 'Cliente não encontrado!'
 

@@ -11,7 +11,7 @@ class DefaultButtonMenu(MDRectangleFlatIconButton):
     def __init__(self, **kwargs):
         super(DefaultButtonMenu, self).__init__(**kwargs)
 
-        self.text_color = (1, 1, 1)
+        self.text_color = (1, 1, 1, 1)
         self.size_hint = (.9, .12)
 
 

@@ -18,12 +18,12 @@ class DefaultButtonMenu(MDRectangleFlatIconButton):
 class DefaultTextInput(MDTextFieldRound):
     def __init__(self, screen_size: tuple, **kwargs):
         super(DefaultTextInput, self).__init__(**kwargs)
-        
+
         self.font_size = screen_size[1] / 35
         self.size_hint = (.82, .08)
         self.multiline = False
-        self.normal_color = (1, 1, 1, 1)
-        self.color_active = (1, 1, 1, 1)
+        # self.normal_color = (1, 1, 1, 1) Change this attributes in framework!
+        # self.color_active = (1, 1, 1, 1) Why have a issue in version: 0.104.2.dev0
         self.line_color = (.0902, .1960, .282353, 1)
 
 

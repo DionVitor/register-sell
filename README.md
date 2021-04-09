@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/badge/contribuition-welcome-brightgreen.svg" alt="contribution">
   </a>
   <a href="http://makeapullrequest.com">
-    <img src="https://img.shields.io/badge/version-2.0-green" alt="version">
+    <img src="https://img.shields.io/badge/version-2.0-brightgreen.svg" alt="version">
   </a>
 </p>
 

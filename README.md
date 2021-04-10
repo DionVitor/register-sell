@@ -2,7 +2,7 @@
 <p align="center"> System for registering debtors and their debts. </p>
 
 <p align="center">
-  <a href="http://makeapullrequest.com">
+  <a>
     <img src="https://img.shields.io/badge/progress-80%25-brightgreen.svg" alt="progress">
   </a>
   <a href="http://makeapullrequest.com">

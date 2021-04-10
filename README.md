@@ -5,10 +5,10 @@
   <a>
     <img src="https://img.shields.io/badge/progress-80%25-brightgreen.svg" alt="progress">
   </a>
-  <a href="http://makeapullrequest.com">
+  <a>
     <img src="https://img.shields.io/badge/contribuition-welcome-brightgreen.svg" alt="contribution">
   </a>
-  <a href="http://makeapullrequest.com">
+  <a>
     <img src="https://img.shields.io/badge/version-2.0-brightgreen.svg" alt="version">
   </a>
 </p>

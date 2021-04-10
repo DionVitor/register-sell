@@ -47,7 +47,7 @@ and receives the money in parts and always need to have control under all debts 
 ## :package: Instructions for run the app
 
 #### 1) In android:
-- 1.1) Copy the file App.apk in directory 'apps' and install in your phone.
+- 1.1) Copy the file register_sell_v.x.x.apk in directory 'apps' and install in your phone.
 
 #### 2) In Windows, Linux or MacOS
 - 2.1) Install Kivy: `python -m pip install kivy`

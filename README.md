@@ -1,7 +1,7 @@
-<h1 style="text_align: center"> Register sell </h1>
-<p style="text_align: center"> System for registering debtors and their debts. </p>
+<h1 align="center"> Register sell </h1>
+<p align="center"> System for registering debtors and their debts. </p>
 
-<p style="text_align: center">
+<p align="center">
   <a>
     <img src="https://img.shields.io/badge/progress-80%25-brightgreen.svg" alt="progress">
   </a>
@@ -15,7 +15,7 @@
 
 English | [Português](https://github.com/DionVitor/register-sell/blob/master/README-pt_BR.md)
 
-<p style="text_align: center">
+<p align="center">
   <kbd>
     <img width="250" style="border-radius: 5px" height="450" src="imgs_md/menu.png" alt="Menu">
   </kbd>

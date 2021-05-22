@@ -6,7 +6,7 @@
     <img src="https://img.shields.io/badge/progresso-80%25-brightgreen.svg" alt="progress">
   </a>
   <a href="http://makeapullrequest.com">
-    <img src="https://img.shields.io/badge/contribuição-bem\tvindo-brightgreen.svg" alt="contribution">
+    <img src="https://img.shields.io/badge/contribuição-bem%20vindo-brightgreen.svg" alt="contribution">
   </a>
   <a>
     <img src="https://img.shields.io/badge/versão-2.0-brightgreen.svg" alt="version">

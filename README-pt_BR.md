@@ -54,7 +54,7 @@ e recebem o dinheiro em partes e sempre precisam ter controle sob todas as dívi
 - 2.2) Clone o repositório: `git clone https://github.com/DionVitor/register-sell`
 - 2.3) Com sua IDE python favorita, rode o projeto.
 
-## :hammer: Tecnologias Utilizadas
+## :hammer: Tecnologias utilizadas
 
 - [Python](https://www.python.org/)
 - [Kivy](https://kivy.org/)

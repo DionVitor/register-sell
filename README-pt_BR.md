@@ -58,7 +58,7 @@ e recebem o dinheiro em partes e sempre precisam ter controle sob todas as dívi
 
 - [Python](https://www.python.org/)
 - [Kivy](https://kivy.org/)
-
+- [KivyMD](https://kivymd.readthedocs.io/en/latest/)
 
 ## :smile: Autor
 
